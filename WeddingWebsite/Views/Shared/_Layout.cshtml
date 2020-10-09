@@ -1,17 +1,39 @@
 ﻿<!DOCTYPE html>
+<style>
+    .banner {
+        position: relative;
+    }
+
+    .banner-caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Abby & Andrew</title>
+    <link rel="shortcut icon" href="~/Images/hearticon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-lux.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
+        <div class="banner">
+            <img src="/Images/PageHeading.png" width="100%" height="100">
+            <div class="banner-caption text-center">
+                <a style="font-size:larger; font-weight:bold">Abby & Andrew</a>
+                <br />
+                <a>April 23, 2021 • Columbus, OH, USA</a>
+                <br />
+                <a>Only <b id="days-to-go"></b> Days To Go!</a>
+            </div>
+        </div>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <img src=@Url.Content("C:/WebProjects/WeddingWebsite/WeddingWebsite/WeddingWebsite/wwwroot/Flower.png") />
                 <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Abby & Andrew</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -51,3 +73,32 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+@section scripts
+{
+    <script>
+        function getTodaysDate() {
+            let day = new Date().getDate();
+            let month = new Date().getMonth();
+            let year = new Date().getFullYear();
+
+            console.log(new Date(year, month, day))
+
+            return new Date(year, month, day);
+        }
+
+        function getDaysToGo() {
+            let today = getTodaysDate();
+            let weddingDay = new Date(2021, 3, 23);
+            let dateDiff = weddingDay.getTime() - today.getTime()
+
+            console.log(weddingDay)
+
+            return dateDiff / 86400000;
+        }
+
+        $(document).ready(function () {
+            $('#days-to-go').text(getDaysToGo()).css("font-weight", "Bold");
+        });
+
+    </script>
+}
