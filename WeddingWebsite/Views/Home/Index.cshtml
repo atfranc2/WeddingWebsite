@@ -2,7 +2,39 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Abby & Andrew</h1>
+        <p>Declaring thier eternal love for one another on April 23, 2021</p>
+        <p>Only <b id="days-to-go"></b> Days To Go!</p>
+    </div>
+
+@section scripts
+{
+    <script>
+        function getTodaysDate() {
+            let day = new Date().getDate();
+            let month = new Date().getMonth();
+            let year = new Date().getFullYear();
+
+            console.log(new Date(year, month, day))
+
+            return new Date(year, month, day);
+        }
+
+        function getDaysToGo() {
+            let today = getTodaysDate();
+            let weddingDay = new Date(2021, 3, 23);
+            let dateDiff = weddingDay.getTime() - today.getTime()
+
+            console.log(weddingDay)
+
+            return dateDiff / 86400000; 
+        }
+
+        $(document).ready(function () {
+            $('#days-to-go').text(getDaysToGo()).css("font-weight", "Bold");
+        });
+
+    </script>
+
+}
