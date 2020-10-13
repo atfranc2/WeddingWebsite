@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingWebsite.Data;
-using WeddingWebsite.Dtos;
 using WeddingWebsite.Models;
 using AutoMapper;
-
+using WeddingWebsite.Dtos;
 
 namespace WeddingWebsite.Controllers.Api
 {
@@ -18,29 +17,105 @@ namespace WeddingWebsite.Controllers.Api
     public class GuestsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public GuestsController(ApplicationDbContext context)
+        public GuestsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper; 
         }
 
-        // GET: api/Guests
+        // GET: api/Guests1
         [HttpGet]
-        public ActionResult<IEnumerable<GuestDto>> GetGuests()
+        public async Task<ActionResult<IEnumerable<GuestDto>>> GetGuests()
         {
-            var guestList = _context.Guests.ToList().Select(guest => Mapper.Map<Guest, GuestDto>);
+            var result = await _context.Guests.ToListAsync();
+            var guestDto = _mapper.Map<List<GuestDto>>(result);
 
-            return Ok(guestList);
+            return guestDto;
         }
 
-        public ActionResult<GuestDto> GetGuest(int id)
+        // GET: api/Guests1/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GuestDto>> GetGuest(int id)
         {
-            var guest = _context.Guests.SingleOrDefault(g => g.Id == id);
+            var guest = await _context.Guests.FindAsync(id);
 
             if (guest == null)
+            {
                 return NotFound();
+            }
 
-            return Ok(guest);
+            return _mapper.Map<GuestDto>(guest);
+        }
+
+        // PUT: api/Guests1/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> PutGuest(int id, GuestDto guestDto)
+        {
+            if (id != guestDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var guest = _mapper.Map<GuestDto, Guest>(guestDto);
+            _context.Entry(guest).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GuestExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Guests1
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<GuestDto>> PostGuest(GuestDto guestDto)
+        {
+            var guest = _mapper.Map<GuestDto, Guest>(guestDto);
+            _context.Guests.Add(guest);
+            await _context.SaveChangesAsync();
+
+            guestDto.Id = guest.Id; 
+
+            return CreatedAtAction("GetGuest", new { id = guest.Id }, guestDto);
+        }
+
+        // DELETE: api/Guests1/5
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<GuestDto>> DeleteGuest(int id)
+        {
+            var guest = await _context.Guests.FindAsync(id);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+
+            _context.Guests.Remove(guest);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<Guest, GuestDto>(guest);
+        }
+
+        private bool GuestExists(int id)
+        {
+            return _context.Guests.Any(e => e.Id == id);
         }
     }
 }
