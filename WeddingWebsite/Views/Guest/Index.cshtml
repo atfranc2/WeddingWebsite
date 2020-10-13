@@ -1,30 +1,56 @@
 ﻿
 <h1>Guest Management Portal</h1>
+<div style="width:90%; margin:0 auto;">
+    <table id="guestsTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+    @section scripts {
+        <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+        <script>
 
-<table id="guestsTable">
-    <thead>
-        <tr>
-            <th>Edit</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+            let guestsDataTable;
 
-@section scripts {
-    <script>
-        let guestsDataTable; 
+            function buildGuestsTable() {
+                $("#guestsTable").DataTable({
+                    ajax: {
+                        url: "/api/guests",
+                        dataSrc: ""
+                    },
+                    columns: [
+                        {
+                            data: "firstName",
+                            render: function (data) {
+                                return "<a>" + data + "</a>";
+                            }
+                        },
+                        {
+                            data: "lastName",
+                            render: function (data) {
+                                return "<a>" + data + "</a>";
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function (data) {
+                                return '<i class="fa fa-pencil-alt"></i>';
+                            }
+                        }
+                    ]
+                });
+            }
 
-        function buildGuestsTable() {
-            $("#guestsTable").datatable(
-
-            );
-        }
-
-        $(document).ready(function () {
-            console.log("Hello world");
-        })
-    </script>
-}
+            $(document).ready(function () {
+                buildGuestsTable();
+            })
+        </script>
+    }
