@@ -9,6 +9,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20201012160632_AddedGuestModel.cs" />
     <Compile Remove="Data\Migrations\20201012160632_AddedGuestModel.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201014222225_UpdateDB.cs" />
+    <Compile Remove="Data\Migrations\20201014222225_UpdateDB.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201014222349_UpdateDB.cs" />
+    <Compile Remove="Data\Migrations\20201014222349_UpdateDB.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

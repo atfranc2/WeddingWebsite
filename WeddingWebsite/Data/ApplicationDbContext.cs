@@ -16,7 +16,7 @@ namespace WeddingWebsite.Data
             : base(options)
         {
         }
-        public DbSet<WeddingWebsite.Dtos.CoupleDto> CoupleDto { get; set; }
+
 
 
     }
