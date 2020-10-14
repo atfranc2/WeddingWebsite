@@ -89,6 +89,7 @@ namespace WeddingWebsite.Controllers.Api
         public async Task<ActionResult<GuestDto>> PostGuest(GuestDto guestDto)
         {
             var guest = _mapper.Map<GuestDto, Guest>(guestDto);
+            guest.FullName = getFullName(guest.FirstName, guest.MiddleName, guest.LastName); 
             _context.Guests.Add(guest);
             await _context.SaveChangesAsync();
 
@@ -116,6 +117,11 @@ namespace WeddingWebsite.Controllers.Api
         private bool GuestExists(int id)
         {
             return _context.Guests.Any(e => e.Id == id);
+        }
+
+        private string getFullName(string firstName, string middleName, string lastName)
+        {
+            return (middleName == "") ? firstName + " " + lastName : firstName + " " + middleName + " " + lastName;
         }
     }
 }

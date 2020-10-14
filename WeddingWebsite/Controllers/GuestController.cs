@@ -12,5 +12,10 @@ namespace WeddingWebsite.Controllers
         {
             return View();
         }
+
+        public IActionResult New()
+        {
+            return View("AddGuestForm"); 
+        }
     }
 }

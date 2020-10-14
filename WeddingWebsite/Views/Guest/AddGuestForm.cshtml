@@ -1,0 +1,129 @@
+﻿
+<h1>New Guest Form</h1>
+
+<form id="newGuest">
+    <div id="firstGuest">
+        <div class="form-group">
+            <label>First Name</label>
+            <input id="firstName1" required type="text" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Middle Name</label>
+            <input id="middleName1" type="text" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input id="lastName1" required type="text" value="" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div id="addGuestLogic">
+        <label class="form-check-label" for="exampleRadios1">
+            Part of a Couple?
+        </label>
+        <br />
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="partOfCouple" id="yesRadio" value="yes">
+            <label class="form-check-label" for="yesRadio">
+                Yes
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="partOfCouple" id="noRadio" value="no" checked>
+            <label class="form-check-label" for="noRadio">
+                No
+            </label>
+        </div>
+    </div>
+    <br />
+    <div id="secondGuest" style="display:none">
+        <div class="form-group">
+            <label>First Name</label>
+            <input id="firstName2" type="text" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Middle Name</label>
+            <input id="middleName2" type="text" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input id="lastName2" type="text" value="" class="form-control" />
+        </div>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+@section scripts 
+{
+    
+    <script>
+        function getVm() {
+            let vm = {};
+            vm.firstName = $("#firstName1").val();
+            vm.middleName = $("#middleName1").val();
+            vm.lastName = $("#lastName1").val(); 
+
+            return JSON.stringify(vm); 
+        }
+
+        function resetForm() {
+            $('#secondGuest').hide();
+            $("#newGuest")[0].reset();
+            $("#firstName1").select();
+        }
+
+        function ajaxSubmitGuest(viewModel) {
+            $.ajax({
+                url: "/api/Guests",
+                method: "post",
+                contentType: 'application/json',
+                data: vm
+            })
+            .done(function () {
+                $("#newGuest")[0].reset();
+                $("#firstName1").select();
+            })
+            .fail(function () {
+                console.log("Failed to submit data via ajax")
+            })
+        }
+
+        $(document).ready(function () {
+
+            $('#yesRadio').on('click', function () {
+                $('#secondGuest').show();
+                $("#firstName2").attr('required', true);
+                $("#lastName2").attr('required', true);
+            });
+
+            $('#noRadio').on('click', function () {
+                $('#secondGuest').hide();
+                $("#firstName2").val('');
+                $("#middleName2").val('');
+                $("#lastName2").val(''); 
+                $("#firstName2").attr('required', false);
+                $("#lastName2").attr('required', false);
+            })
+            
+            $("#newGuest").submit(function (e) {
+                e.preventDefault();
+                let vm = getVm();
+                console.log(vm);
+
+                $.ajax({
+                    url: "/api/Guests",
+                    method: "post",
+                    contentType: 'application/json',
+                    data: vm
+                })
+                .done(function () {
+                    $("#newGuest")[0].reset();
+                    $("#firstName1").select();
+                })
+                .fail(function () {
+                    console.log("Failed to submit data via ajax")
+                })
+            });
+        })
+    </script>
+}
