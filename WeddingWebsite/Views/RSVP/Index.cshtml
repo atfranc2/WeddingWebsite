@@ -1,5 +1,44 @@
 ﻿@{
     ViewData["Title"] = "RSVP";
 }
+    
+
+    <form id="newGuest">
+        <div class="form-group">
+            <label>Full Name</label>
+            <div class="tt-container">
+                <input id="fullName" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+        <div>
+            @Html.ActionLink("Find You Invitation", "RSVPForm", "RSVP", null, new { @class = "btn btn-primary" })
+        </div>
+    </form>
+
+@section scripts
+{ 
+    <script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
+    <script>
+        $(document).ready(function () {
+            var guests = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/Guests?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#fullName').typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'guests',
+                display: 'fullName',
+                source: guests
+            });
+        }); 
+    </script>
+}
 
 

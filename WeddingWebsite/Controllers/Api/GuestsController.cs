@@ -27,12 +27,17 @@ namespace WeddingWebsite.Controllers.Api
 
         // GET: api/Guests1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GuestDto>>> GetGuests()
+        public ActionResult<IEnumerable<GuestDto>> GetGuests(string query = null)
         {
-            var result = await _context.Guests.ToListAsync();
-            var guestDto = _mapper.Map<List<GuestDto>>(result);
+            var guestsQuery = _context.Guests.AsEnumerable();
 
-            return guestDto;
+            if (!String.IsNullOrWhiteSpace(query))
+                guestsQuery = guestsQuery.Where(g => g.FullName.Contains(query));
+
+
+            var guestDtos = guestsQuery.ToList().Select(_mapper.Map<Guest,GuestDto>);
+
+            return Ok(guestDtos);
         }
 
         // GET: api/Guests1/5
@@ -93,7 +98,8 @@ namespace WeddingWebsite.Controllers.Api
             _context.Guests.Add(guest);
             await _context.SaveChangesAsync();
 
-            guestDto.Id = guest.Id; 
+            guestDto.Id = guest.Id;
+            guestDto.FullName = guest.FullName; 
 
             return CreatedAtAction("GetGuest", new { id = guest.Id }, guestDto);
         }

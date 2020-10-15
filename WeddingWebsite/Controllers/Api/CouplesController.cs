@@ -97,18 +97,13 @@ namespace WeddingWebsite.Controllers.Api
         public async Task<ActionResult<CoupleDto>> PostCouple(CoupleDto coupleDto)
         {
             var guestOneDto = coupleDto.GuestOne;
-            var guestOneFullName = getFullName(guestOneDto.FirstName, guestOneDto.MiddleName, guestOneDto.LastName);
-            var guestOne = await _context.Guests.FirstOrDefaultAsync(c => c.FullName == guestOneFullName); 
-
             var guestTwoDto = coupleDto.GuestTwo;
-            var guestTwoFullName = getFullName(guestTwoDto.FirstName, guestTwoDto.MiddleName, guestTwoDto.LastName);
-            var guestTwo = await _context.Guests.FirstOrDefaultAsync(c => c.FullName == guestTwoFullName);
 
             var couple = new Couple
             {
-                GuestOneId = guestOne.Id,
-                GuestTwoId = guestTwo.Id,
-                CoupleTag = guestOneFullName + " & " + guestTwoFullName
+                GuestOneId = guestOneDto.Id,
+                GuestTwoId = guestTwoDto.Id,
+                CoupleTag = guestOneDto.FullName + " & " + guestTwoDto.FullName
             };
 
             _context.Couples.Add(couple);
