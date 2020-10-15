@@ -108,6 +108,13 @@ namespace WeddingWebsite.Controllers.Api
                 return NotFound();
             }
 
+            var couple = _context.Couples.Where(c => c.CoupleTag.Contains(guest.FullName)).SingleOrDefault(); 
+            if (couple != null)
+            {
+                _context.Couples.Remove(couple);
+                await _context.SaveChangesAsync();
+            }
+
             _context.Guests.Remove(guest);
             await _context.SaveChangesAsync();
 

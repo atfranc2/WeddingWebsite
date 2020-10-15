@@ -57,13 +57,37 @@
 {
     
     <script>
-        function getVm() {
+
+        function getGuestOneViewModel() {
             let vm = {};
             vm.firstName = $("#firstName1").val();
             vm.middleName = $("#middleName1").val();
-            vm.lastName = $("#lastName1").val(); 
+            vm.lastName = $("#lastName1").val();
 
-            return JSON.stringify(vm); 
+            return vm; 
+        }
+
+        function getGuestTwoViewModel() {
+            let vm = {};
+            vm.firstName = $("#firstName2").val();
+            vm.middleName = $("#middleName2").val();
+            vm.lastName = $("#lastName2").val();
+
+            if (vm.firstName == "")
+                return null; 
+
+            return vm;
+        }
+
+        function getCoupleViewModel() {
+            let vm = {};
+            let guestOne = getGuestOneViewModel();
+            let guestTwo = getGuestTwoViewModel(); 
+
+            vm.guestOne = guestOne; 
+            vm.guestTwo = guestTwo; 
+
+            return vm; 
         }
 
         function resetForm() {
@@ -72,24 +96,33 @@
             $("#firstName1").select();
         }
 
-        function ajaxSubmitGuest(viewModel) {
-            $.ajax({
+        function ajaxPostGuest(viewModel) {
+            return $.ajax({
                 url: "/api/Guests",
                 method: "post",
                 contentType: 'application/json',
-                data: vm
+                data: viewModel
+            });
+
+        }
+
+        function ajaxPostCouple(viewModel, resetsForm) {
+            $.ajax({
+                url: "/api/Couples",
+                method: "post",
+                contentType: 'application/json',
+                data: viewModel
             })
             .done(function () {
-                $("#newGuest")[0].reset();
-                $("#firstName1").select();
+                if (resetsForm)
+                    resetForm();
             })
             .fail(function () {
                 console.log("Failed to submit data via ajax")
             })
         }
 
-        $(document).ready(function () {
-
+        function loadRadioBtnBehavior() {
             $('#yesRadio').on('click', function () {
                 $('#secondGuest').show();
                 $("#firstName2").attr('required', true);
@@ -100,29 +133,34 @@
                 $('#secondGuest').hide();
                 $("#firstName2").val('');
                 $("#middleName2").val('');
-                $("#lastName2").val(''); 
+                $("#lastName2").val('');
                 $("#firstName2").attr('required', false);
                 $("#lastName2").attr('required', false);
-            })
+            });
+        }
+
+        $(document).ready(function () {
+
+            loadRadioBtnBehavior();
             
             $("#newGuest").submit(function (e) {
                 e.preventDefault();
-                let vm = getVm();
-                console.log(vm);
 
-                $.ajax({
-                    url: "/api/Guests",
-                    method: "post",
-                    contentType: 'application/json',
-                    data: vm
-                })
-                .done(function () {
-                    $("#newGuest")[0].reset();
-                    $("#firstName1").select();
-                })
-                .fail(function () {
-                    console.log("Failed to submit data via ajax")
-                })
+                let guestOne = JSON.stringify(getGuestOneViewModel());
+                let guestTwo = JSON.stringify(getGuestTwoViewModel()); 
+                let couple = JSON.stringify(getCoupleViewModel());
+
+                if (guestTwo == 'null') {
+                    ajaxPostGuest(guestOne).then(resetForm());
+                }
+                else {
+                    ajaxPostGuest(guestOne)
+                        .then(ajaxPostGuest(guestTwo))
+                        .then(ajaxPostCouple(couple))
+                        .then(resetForm());
+                }
+
+
             });
         })
     </script>
