@@ -58,6 +58,23 @@ namespace WeddingWebsite.Controllers.Api
             return Ok(coupleDto);
         }
 
+        [Route("[action]/{guestId}")]
+        [HttpGet]
+        public async Task<ActionResult<CoupleDto>> FindCouple(int guestId)
+        {
+            var couple = await _context.Couples
+                .Include(c => c.GuestOne)
+                .Include(c => c.GuestTwo)
+                .SingleOrDefaultAsync(c => c.GuestOneId == guestId || c.GuestTwoId == guestId);
+
+            if (couple == null)
+                return NotFound(); 
+
+            var coupleDto = _mapper.Map<Couple, CoupleDto>(couple);
+
+            return Ok(coupleDto);
+        }
+
         // PUT: api/Couples/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

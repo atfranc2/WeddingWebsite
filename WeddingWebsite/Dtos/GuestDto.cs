@@ -16,5 +16,9 @@ namespace WeddingWebsite.Dtos
         public string LastName { get; set; }
 
         public string FullName { get; set; }
+
+        public bool PlusOneAllowed { get; set; }
+
+        public bool PartOfCouple { get; set; }
     }
 }

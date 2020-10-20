@@ -29,8 +29,27 @@
             </label>
         </div>
         <div class="form-check-inline">
-            <input class="form-check-input" type="radio" name="partOfCouple" id="noRadio" value="no" checked>
+            <input class="form-check-input" type="radio" name="partOfCouple" id="noRadio" value="no">
             <label class="form-check-label" for="noRadio">
+                No
+            </label>
+        </div>
+    </div>
+    <br />
+    <div id="allowedPlusOne" style="display: none;">
+        <label class="form-check-label" for="exampleRadios1">
+            Allowed a Plus One?
+        </label>
+        <br />
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="plusOnePermission" id="plusOneAllowed" value="yes">
+            <label class="form-check-label" for="plusOneAllowed">
+                Yes
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="radio" name="plusOnePermission" id="plusOneDenied" value="no">
+            <label class="form-check-label" for="plusOneDenied">
                 No
             </label>
         </div>
@@ -63,6 +82,8 @@
             vm.firstName = $("#firstName1").val();
             vm.middleName = $("#middleName1").val();
             vm.lastName = $("#lastName1").val();
+            vm.plusOneAllowed = $("input[name='plusOnePermission']:checked").val() == 'yes'; 
+            vm.partOfCouple = $("input[name='partOfCouple']:checked").val() == 'yes'; 
 
             return vm; 
         }
@@ -72,6 +93,8 @@
             vm.firstName = $("#firstName2").val();
             vm.middleName = $("#middleName2").val();
             vm.lastName = $("#lastName2").val();
+            vm.plusOneAllowed = false;
+            vm.partOfCouple = true; 
 
             if (vm.firstName == "")
                 return null; 
@@ -90,8 +113,14 @@
             return vm; 
         }
 
+        function clearPlusOneRadio() {
+            $("#plusOneAllowed").prop("checked", false);
+            $("#plusOneDenied").prop("checked", false);
+        }
+
         function resetForm() {
             $('#secondGuest').hide();
+            clearPlusOneRadio();
             $("#newGuest")[0].reset();
             $("#firstName1").select();
         }
@@ -118,12 +147,15 @@
         function loadRadioBtnBehavior() {
             $('#yesRadio').on('click', function () {
                 $('#secondGuest').show();
+                $('#allowedPlusOne').hide();
+                clearPlusOneRadio();
                 $("#firstName2").attr('required', true);
                 $("#lastName2").attr('required', true);
             });
 
             $('#noRadio').on('click', function () {
                 $('#secondGuest').hide();
+                $('#allowedPlusOne').show();
                 $("#firstName2").val('');
                 $("#middleName2").val('');
                 $("#lastName2").val('');

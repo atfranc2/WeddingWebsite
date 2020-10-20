@@ -2,23 +2,26 @@
     ViewData["Title"] = "RSVP";
 }
     
-
-    <form id="newGuest">
+    
+    <form id="guestLookup">
         <div class="form-group">
             <label>Full Name</label>
             <div class="tt-container">
                 <input id="fullName" required type="text" value="" class="form-control" />
             </div>
         </div>
-        <div>
-            @Html.ActionLink("Find You Invitation", "RSVPForm", "RSVP", null, new { @class = "btn btn-primary" })
-        </div>
+        <button class="btn btn-primary">Find Your Invitation</button>
     </form>
 
 @section scripts
 { 
     <script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
     <script>
+
+        function lookupGuestByName(fullName) {
+
+        }
+
         $(document).ready(function () {
             var guests = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('fullName'),
@@ -28,6 +31,7 @@
                     wildcard: '%QUERY'
                 }
             });
+            var vm = {};
 
             $('#fullName').typeahead({
                 minLength: 3,
@@ -36,8 +40,16 @@
                 name: 'guests',
                 display: 'fullName',
                 source: guests
+            }).on("typeahead:select", function (e, guest) {
+                vm.id = guest.id
             });
-        }); 
+
+            $("#guestLookup").submit(function (e) {
+                e.preventDefault();
+
+            });
+            // window.location.href = "@Url.Action("New", "Guest")";
+        });
     </script>
 }
 
