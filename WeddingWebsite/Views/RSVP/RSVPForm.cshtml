@@ -1,2 +1,80 @@
-﻿
+﻿@model WeddingWebsite.ViewModels.RSVPFormViewModel
 
+@{
+    ViewData["Title"] = "RSVP";
+}
+
+<form id="rsvpForm">
+    <div class="form-group col-sm-3">
+        <label>Contact Email</label>
+        <div class="tt-container">
+            <input id="contactsEmail" required type="email" value="" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-check-label" for="guestOneAttending">
+                @Model.GuestOneName
+            </label>
+        </div>
+        <div class="btn-group btn-group-toggle d-inline-block col-sm-10" data-toggle="buttons" id="guestOneAttendence" style="display:grid">
+            <label class="btn btn-outline-primary">
+                <input type="radio" name="options" id="guestOneAttending" autocomplete="off"> Accept
+            </label>
+            <label class="btn btn-outline-primary active">
+                <input type="radio" name="options" id="guestOneNotAttending" autocomplete="off"> Decline
+            </label>
+        </div>
+    </div>
+    @if (Model.GuestTwoId != null)
+    {
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label class="form-check-label" for="guestTwoAttending">
+                    @Model.GuestTwoName
+                </label>
+            </div>
+            <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestTwoAttendence">
+                <label class="btn btn-outline-info">
+                    <input type="radio" name="options" id="guestTwoAttending" autocomplete="off"> Accept
+                </label>
+                <label class="btn btn-outline-info">
+                    <input type="radio" name="options" id="guestTwoNotAttending" autocomplete="off"> Decline
+                </label>
+            </div>
+        </div>
+    }
+
+    <div class="form-group col-sm-3">
+        <label>What Time Will Your Party Arrive?</label>
+        <div class="tt-container">
+            <input id="arrivalTime" required type="time" value="" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group col-sm-3">
+        <label>Song Requests</label>
+        <div class="tt-container">
+            <input id="songRequests" required type="text" value="" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group col-sm-3">
+        <label>Marriage Advice</label>
+        <div class="tt-container">
+            <input id="marriageAdvice" required type="text" value="" class="form-control" />
+        </div>
+    </div>
+    <button class="btn btn-primary">RSVP</button>
+</form>
+
+@section scripts {
+
+    <script>
+        let guestOneId = @Model.GuestOneId;
+        let guestTwoId =  @Model.GuestTwoId;
+
+        $(document).ready(function () {
+            console.log(guestOneId);
+        });
+    </script>
+
+}

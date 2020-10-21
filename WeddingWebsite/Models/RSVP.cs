@@ -13,7 +13,11 @@ namespace WeddingWebsite.Models
         [Required]
         public Guest GuestOne { get; set; }
 
+        public int GuestOneId { get; set; }
+
         public Guest GuestTwo { get; set; }
+
+        public int GuestTwoId { get; set; }
 
         [Required]
         public string ContactEmail { get; set; }
