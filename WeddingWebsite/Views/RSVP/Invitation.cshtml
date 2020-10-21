@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "RSVP";
+}
+
+
+<form id="rsvpForm">
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-check-label" for="guestOneAttending">
+                @Model.GuestOneName
+            </label>
+        </div>
+        <div class="btn-group btn-group-toggle d-inline-block col-sm-10" data-toggle="buttons" id="guestOneAttendence" style="display:grid">
+            <label class="btn btn-outline-primary">
+                <input type="radio" name="options" id="guestOneAttending" autocomplete="off"> Accept
+            </label>
+            <label class="btn btn-outline-primary active">
+                <input type="radio" name="options" id="guestOneNotAttending" autocomplete="off"> Decline
+            </label>
+        </div>
+    </div>
+    @if (Model.GuestTwoId != null)
+    {
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label class="form-check-label" for="guestTwoAttending">
+                    @Model.GuestTwoName
+                </label>
+            </div>
+            <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestTwoAttendence">
+                <label class="btn btn-outline-info">
+                    <input type="radio" name="options" id="guestTwoAttending" autocomplete="off"> Accept
+                </label>
+                <label class="btn btn-outline-info">
+                    <input type="radio" name="options" id="guestTwoNotAttending" autocomplete="off"> Decline
+                </label>
+            </div>
+        </div>
+    }
+    <button class="btn btn-primary">RSVP</button>
+</form>

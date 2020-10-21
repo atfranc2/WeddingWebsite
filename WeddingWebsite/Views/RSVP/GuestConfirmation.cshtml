@@ -1,0 +1,16 @@
+﻿@model IEnumerable<WeddingWebsite.Models.RSVP>
+
+<form>
+    @foreach (var rsvp in Model)
+    {
+
+        var guestOne = rsvp.GuestOne.FullName;
+        var guestTwo = (rsvp.GuestTwo == null) ? "" : " & " + rsvp.GuestTwo.FullName;
+        var guestTag = (guestTwo == null) ? guestOne : guestOne + guestTwo;
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" id="@guestTag" name="guestRadio" required>
+            <label class="form-check-label" for="guestRadio">@guestTag</label>
+        </div>
+    }
+</form>

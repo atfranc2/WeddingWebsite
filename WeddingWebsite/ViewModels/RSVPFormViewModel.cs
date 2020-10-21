@@ -14,5 +14,7 @@ namespace WeddingWebsite.ViewModels
         public int? GuestTwoId { get; set; }
 
         public string GuestTwoName { get; set; }
+
+        public string CoupleTag { get; set; }
     }
 }

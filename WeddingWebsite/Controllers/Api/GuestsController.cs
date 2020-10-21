@@ -32,7 +32,7 @@ namespace WeddingWebsite.Controllers.Api
             var guestsQuery = _context.Guests.AsEnumerable();
 
             if (!String.IsNullOrWhiteSpace(query))
-                guestsQuery = guestsQuery.Where(g => g.FullName.Contains(query));
+                guestsQuery = guestsQuery.Where(g => g.FullName.ToLower().Contains(query.ToLower()));
 
 
             var guestDtos = guestsQuery.ToList().Select(_mapper.Map<Guest,GuestDto>);

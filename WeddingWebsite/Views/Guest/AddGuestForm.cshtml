@@ -23,7 +23,7 @@
         </label>
         <br />
         <div class="form-check-inline">
-            <input class="form-check-input" type="radio" name="partOfCouple" id="yesRadio" value="yes">
+            <input class="form-check-input" type="radio" name="partOfCouple" id="yesRadio" value="yes" required>
             <label class="form-check-label" for="yesRadio">
                 Yes
             </label>
@@ -152,6 +152,7 @@
                 clearPlusOneRadio();
                 $("#firstName2").attr('required', true);
                 $("#lastName2").attr('required', true);
+                $("#plusOneAllowed").attr('required', false);
             });
 
             $('#noRadio').on('click', function () {
@@ -162,6 +163,7 @@
                 $("#lastName2").val('');
                 $("#firstName2").attr('required', false);
                 $("#lastName2").attr('required', false);
+                $("#plusOneAllowed").attr('required', true);
             });
         }
 

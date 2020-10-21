@@ -10,7 +10,6 @@ namespace WeddingWebsite.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public Guest GuestOne { get; set; }
 
         public int GuestOneId { get; set; }
@@ -19,18 +18,19 @@ namespace WeddingWebsite.Models
 
         public int GuestTwoId { get; set; }
 
-        [Required]
         public string ContactEmail { get; set; }
 
-        [Required]
         public bool GuestOneAccepts { get; set; }
 
         public bool GuestTwoAccepts { get; set; }
 
-        [Required]
+        public DateTime DayOfArrival { get; set; }
+
         public DateTime TimeOfArrival { get; set; }
 
         public IEnumerable<SongRequest> SongRequests { get; set; }
+
+        public IEnumerable<string> DrinkRequests { get; set; }
 
         public string MarriageAdvice { get; set; }
     }
