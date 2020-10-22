@@ -12,11 +12,11 @@
                         @Model.GuestOneName
                     </label>
                 </div>
-                <div class="btn-group btn-group-toggle d-inline-block col-sm-10" data-toggle="buttons" id="guestOneAttendence" style="display:grid">
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" name="options" id="guestOneAttending" autocomplete="off"> Accept
+                <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestOneAttendence">
+                    <label class="btn btn-outline-info">
+                        <input type="radio" name="options" id="guestOneAttending" required autocomplete="off"> Accept
                     </label>
-                    <label class="btn btn-outline-primary active">
+                    <label class="btn btn-outline-info">
                         <input type="radio" name="options" id="guestOneNotAttending" autocomplete="off"> Decline
                     </label>
                 </div>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestTwoAttendence">
                         <label class="btn btn-outline-info">
-                            <input type="radio" name="options" id="guestTwoAttending" autocomplete="off"> Accept
+                            <input type="radio" name="options" id="guestTwoAttending" required autocomplete="off"> Accept
                         </label>
                         <label class="btn btn-outline-info">
                             <input type="radio" name="options" id="guestTwoNotAttending" autocomplete="off"> Decline
@@ -41,23 +41,45 @@
             }
             <button class="btn btn-primary" id="nextGuestAttendence">Next</button>
         </div>
-        <div id="contactInformation">
+        <div id="contactInformation" style="display:none">
             <div class="form-group">
                 <label>Email Address</label>
                 <div class="tt-container">
                     <input id="emailAddress" required type="email" value="" class="form-control" />
                 </div>
             </div>
-            <button class="btn btn-primary" id="nextGuestContactInfo">Next</button>
             <button class="btn btn-primary" id="prevContactInformation">Previous</button>
+            <button class="btn btn-primary" id="nextGuestContactInfo">Next</button>
         </div>
-        <button class="btn btn-primary">RSVP</button>
+        <div id="submit" style="display:none">
+            <button class="btn btn-primary">RSVP</button>
+        </div>
     </form>
 
-@section scripts{ 
+@section scripts { 
     <script>
-        $(document).ready(function () {
+        function guestPage() {
+            $("#nextGuestAttendence").click(function () {
+                $("#guestAttentence").hide();
+                $("#contactInformation").show();
+            });
+        }
 
+        function contactPage() {
+            $("#prevContactInformation").click(function () {
+                $("#contactInformation").hide();
+                $("#guestAttentence").show();
+            });
+
+            $("#nextGuestContactInfo").click(function () {
+                $("#guestAttentence").hide();
+                $("#contactInformation").show();
+            });
+        }
+
+        $(document).ready(function () {
+            guestPage(); 
+            contactPage();
         })
     </script>
 }

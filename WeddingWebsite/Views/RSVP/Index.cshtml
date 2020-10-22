@@ -50,7 +50,7 @@
                 if (vm.Id === undefined)
                     window.location.href = "@Url.Action("GuestConfirmation", "RSVP")?searchString=" + $("#fullName").val();
                 else
-                    window.location.href = "@Url.Action("RSVPForm", "RSVP")?guestId=" + vm.Id;
+                    window.location.href = "@Url.Action("Invitation", "RSVP")?guestId=" + vm.Id;
             });
 
         });
