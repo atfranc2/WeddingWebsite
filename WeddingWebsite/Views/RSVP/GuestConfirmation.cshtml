@@ -1,16 +1,26 @@
-﻿@model IEnumerable<WeddingWebsite.Models.RSVP>
+﻿@model WeddingWebsite.ViewModels.GuestConfirmationViewModel
 
-<form>
-    @foreach (var rsvp in Model)
-    {
-
-        var guestOne = rsvp.GuestOne.FullName;
-        var guestTwo = (rsvp.GuestTwo == null) ? "" : " & " + rsvp.GuestTwo.FullName;
-        var guestTag = (guestTwo == null) ? guestOne : guestOne + guestTwo;
-
-        <div class="form-check">
-            <input type="radio" class="form-check-input" id="@guestTag" name="guestRadio" required>
-            <label class="form-check-label" for="guestRadio">@guestTag</label>
+@using (Html.BeginForm("Invitation", "RSVP", FormMethod.Post))
+{
+    <div class="container">
+        <div class="form-group">
+            <label>WE'VE FOUND MORE THAN ONE MATCH IN THE GUEST LIST. PLEASE SELECT YOUR NAME FROM THE LIST BELOW.</label>
+            <br />
+            @foreach (var guestTag in Model.GuestTags)
+            {
+                @Html.RadioButtonFor(m => m.GuestTag, guestTag) @guestTag
+                <br />
+            }
         </div>
+    </div>
+    @for (int i = 0; i < Model.RSVPs.Count; i++)
+    {
+        @Html.HiddenFor(model => Model.RSVPs[i].GuestOneId)
+        @Html.HiddenFor(model => Model.RSVPs[i].GuestOneName)
+        @Html.HiddenFor(model => Model.RSVPs[i].GuestTwoId)
+        @Html.HiddenFor(model => Model.RSVPs[i].GuestTwoName)
+        @Html.HiddenFor(model => Model.RSVPs[i].GuestTag)
     }
-</form>
+    <button class="btn btn-primary" type="submit">Continue</button>
+    @Html.ActionLink("Search Again", "Index", "RSVP", null, new { @class = "btn btn-primary" })
+}

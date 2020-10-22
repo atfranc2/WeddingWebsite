@@ -10,13 +10,15 @@ namespace WeddingWebsite.Models
     {
         public int Id { get; set; }
 
-        public Guest GuestOne { get; set; }
+        public string GuestOneName { get; set; }
 
         public int GuestOneId { get; set; }
 
-        public Guest GuestTwo { get; set; }
+        public string GuestTwoName { get; set; }
 
         public int GuestTwoId { get; set; }
+
+        public string GuestTag { get; set; }
 
         public string ContactEmail { get; set; }
 

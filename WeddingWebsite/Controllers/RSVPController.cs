@@ -34,13 +34,6 @@ namespace WeddingWebsite.Controllers
             return View();
         }
 
-        public IActionResult IdentityConfirmation(int guestId)
-        {
-            var couples = new CouplesController(_context, _mapper); 
-            
-            return View("Index"); 
-        }
-
         public IActionResult GuestConfirmation(string searchString)
         {
             var canidates = _context.Guests.Where(g => g.FullName.ToLower().Contains(searchString.ToLower())).ToList();
@@ -59,9 +52,10 @@ namespace WeddingWebsite.Controllers
                     rsvps.Add(new RSVP
                     {
                         GuestOneId = couple.GuestOneId,
-                        GuestOne = couple.GuestOne,
+                        GuestOneName = couple.GuestOne.FullName,
                         GuestTwoId = couple.GuestTwoId,
-                        GuestTwo = couple.GuestTwo
+                        GuestTwoName = couple.GuestTwo.FullName,
+                        GuestTag = couple.CoupleTag
                     });
                 }
                 else
@@ -69,7 +63,8 @@ namespace WeddingWebsite.Controllers
                     rsvps.Add(new RSVP
                     {
                         GuestOneId = canidate.Id,
-                        GuestOne = canidate
+                        GuestOneName = canidate.FullName,
+                        GuestTag = canidate.FullName
                     });
                 }
             };
@@ -78,9 +73,18 @@ namespace WeddingWebsite.Controllers
                 .Distinct(new RSVPComparer())
                 .ToList();
 
-            return View(distinctRSVPs);
+            var guestTags = distinctRSVPs.Select(r => r.GuestTag).ToList();
+
+            var viewModel = new GuestConfirmationViewModel
+            {
+                RSVPs = distinctRSVPs,
+                GuestTags = guestTags
+            };
+
+            return View(viewModel);
         }
 
+        [HttpGet]
         public IActionResult Invitation(int guestId)
         {
 
@@ -97,15 +101,23 @@ namespace WeddingWebsite.Controllers
             var rsvp = new RSVP
             {
                 GuestOneId = guestOne.Id,
-                GuestOne = guestOne,
+                GuestOneName = guestOne.FullName,
                 GuestTwoId = guestTwo.Id,
-                GuestTwo = guestTwo
+                GuestTwoName = guestTwo.FullName
             };
 
             return View(rsvp);
         }
 
-        public IActionResult Invitation(RSVP rsvp)
+        [HttpPost]
+        public IActionResult Invitation(GuestConfirmationViewModel viewModel)
+        {
+            var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault(); 
+            
+            return View(rsvp);
+        }
+
+        public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);
         }
@@ -170,16 +182,16 @@ class RSVPComparer : IEqualityComparer<RSVP>
 {
     public bool Equals(RSVP rsvpOne, RSVP rsvpTwo)
     {
-        var guestOneEqual = rsvpOne.GuestOne.FullName == rsvpTwo.GuestOne.FullName;
-        var guestTwoEqual = rsvpOne.GuestTwo.FullName == rsvpTwo.GuestTwo.FullName;
+        var guestOneEqual = rsvpOne.GuestOneName == rsvpTwo.GuestOneName;
+        var guestTwoEqual = rsvpOne.GuestTwoName == rsvpTwo.GuestTwoName;
 
         return guestOneEqual && guestTwoEqual; 
     }
     public int GetHashCode(RSVP rsvp)
     {
         if (Object.ReferenceEquals(rsvp, null)) return 0;
-        int hashGuestOneName = rsvp.GuestOne.FullName == null ? 0 : rsvp.GuestOne.FullName.GetHashCode();
-        int hashGuestTwoCode = rsvp.GuestTwo == null ? 0 : rsvp.GuestTwo.FullName.GetHashCode();
+        int hashGuestOneName = rsvp.GuestOneName == null ? 0 : rsvp.GuestOneName.GetHashCode();
+        int hashGuestTwoCode = rsvp.GuestTwoName == null ? 0 : rsvp.GuestTwoName.GetHashCode();
         return hashGuestOneName ^ hashGuestTwoCode;
     }
 }
