@@ -3,7 +3,6 @@
     ViewData["Title"] = "RSVP";
 }
 
-
 @*    <form id="attendenceForm">
         <div id="guestAttentence">
             <div class="form-group row">
@@ -70,68 +69,161 @@
         <button class="btn btn-primary" type="button" id="prevGuestContactInfo">Previous</button>
         <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
     </form>*@
-    <form id="songRequestForm">
-        <div class="form-group">
-            <div class="row">
-                <div class="col">
-                    <input type="text" class="form-control" id="songArtist" placeholder="Song Artist">
-                    <div class="invalid-feedback" id="invalidArtist">Song Artist Cannot Be Blank</div>
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" id="songName" placeholder="Song Name">
-                    <div class="invalid-feedback" id="invalidSong">Song Name Cannot Be Blank</div>
-                </div>
-                <div class="col">
-                    <button class="btn btn-primary" type="button" id="addSong">Add</button>
-                </div>
+<form id="songRequestForm">
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" id="songArtist" placeholder="Song Artist">
+                <div class="invalid-feedback" id="invalidArtist">Song Artist Cannot Be Blank</div>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <ul id="songs" class="list-group"></ul>
-                </div>
+            <div class="col">
+                <input type="text" class="form-control" id="songName" placeholder="Song Name">
+                <div class="invalid-feedback" id="invalidSong">Song Name Cannot Be Blank</div>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" type="button" id="addSong">Add</button>
             </div>
         </div>
-        <button class="btn btn-primary" type="button" id="prevGuestContactInfo">Previous</button>
-        <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
-    </form>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">
+                <ul id="songs" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button" id="prevGuestContactInfo:ssss">Previous</button>
+    <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
+</form>
 
 
-@section scripts { 
+
+@section scripts {
     <script>
+        let songArtistDelimiter = "/|$|\\";
+        let songPicks = {}; 
 
-        function addSong() {
-            $("#addSong").click(function () {
-                let song = $("#songName").val().trim();
-                let artist = $("#songArtist").val().trim();
+        function isValidArtist() {
+            let artist = $("#songArtist").val().trim();
 
-                $("#invalidSong").hide();
-                $("#invalidArtist").hide();
+            return artist != "";
+        }
 
-                if (song === "" && artist === "") {
-                    $("#invalidSong").show();
-                    $("#invalidArtist").show();
-                    return false;
-                }
+        function isValidSongName() {
+            let song = $("#songName").val().trim();
 
-                if (song == "") {
-                    $("#invalidSong").show();
-                    return false;
-                }
+            return song != "";
+        }
 
-                if (artist == "") {
+        function showSongErrors() {
+            if (!isValidSongName() && !isValidArtist()) {
+                $("#invalidSong").show();
+                $("#invalidArtist").show();
+            }
 
-                    $("#invalidArtist").show();
-                    return false;
-                }
+            if (!isValidSongName())
+                $("#invalidSong").show();
 
-                $("#songs").append("<li>" + song + " by " + artist + "</li>")
 
-            });
+            if (!isValidArtist())
+                $("#invalidArtist").show();
 
         }
 
+        function isValidSongRequest() {
+            return isValidSongName() && isValidArtist();
+        }
+
+        function clearSongFields() {
+            $("#songArtist").val("");
+            $("#songName").val("");
+        }
+
+        function getSongListItem(artist, song) {
+            let listItem =
+                '<li class="list-group-item" style="display:table" id="' + artist.replace(" ", "") + song.replace(" ", "") + '">' +
+                    '<a style="vertical-align:middle;display:table-cell">' + song + " by " + artist + '</a>' +
+                '<button class="btn btn-sm" style="float:right;" type="button" id="' + artist + "/|$|\\" + song + '" onclick="deleteSong(this)">' +
+                        '<i class="fa fa-times-circle" style="font-size:24px;color:red"></i>' + 
+                    '</button >' +  
+                '</li >'
+
+            return listItem; 
+
+        }
+
+        function clearSongErrors() {
+            $("#invalidSong").hide();
+            $("#invalidArtist").hide();
+        }
+
+        function deleteListItem(itemId) {
+            $("#" + itemId).remove(); 
+        }
+
+        function deleteSong(element) {
+            let keyValueList = element.id.split(songArtistDelimiter);
+            let artist = keyValueList[0];
+            let song = keyValueList[1];
+            deleteListItem(artist.replace(" ", "") + song.replace(" ", "")); 
+
+            if (songPicks[artist].length == 1)
+                delete songPicks[artist];
+            else {
+                let songIndex = songPicks[artist].indexOf(song); 
+                songPicks[artist].splice(songIndex, 1);
+            }
+        }
+
+        function artistInDict(artist) {
+            return songPicks[artist] !== undefined; 
+        }
+
+        function songInArtistSongList(artist, song) {
+            return songPicks[artist].includes(song);
+        }
+
+        function addSongToList(artist, song) {
+            let addSong = false; 
+            if (artistInDict(artist)) {
+                if (!songInArtistSongList(artist, song)) {
+                    songPicks[artist].push(song);
+                    addSong = true;
+                }
+            }
+            else {
+                songPicks[artist] = [song];
+                addSong = true;
+            }
+
+            if (addSong)
+                $("#songs").append(getSongListItem(artist, song));
+        }
+
+        function addSong() {
+            $("#addSong").click(function () {
+                clearSongErrors(); 
+                if (!isValidSongRequest()) {
+                    showSongErrors();
+                    return false;
+                };
+
+                let song = $("#songName")
+                    .val()
+                    .trim()
+                    .toLowerCase();
+                let artist = $("#songArtist")
+                    .val()
+                    .trim()
+                    .toLowerCase();
+
+                
+                addSongToList(artist, song); 
+                clearSongFields();
+            });
+        }
+
         $(document).ready(function () {
-            addSong(); 
+            addSong();
             $("#attendenceForm").submit(function (e) {
                 e.preventDefault();
                 $("#attendenceForm").hide();
