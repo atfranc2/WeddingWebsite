@@ -12,6 +12,7 @@ namespace WeddingWebsite.Data
     {
         public DbSet<Guest> Guests { get; set; }
         public DbSet<Couple> Couples { get; set; }
+        public DbSet<SpecialtyDrinkModel> DrinkSpecials { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

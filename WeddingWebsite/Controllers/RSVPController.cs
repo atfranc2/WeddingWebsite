@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WeddingWebsite.Controllers.Api;
 using WeddingWebsite.Data;
@@ -98,12 +99,23 @@ namespace WeddingWebsite.Controllers
                 guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
             }
 
+            var specialtyDrinks = new List<SpecialtyDrinkModel>
+            {
+                new SpecialtyDrinkModel { DrinkName = "Super Yum",DrinkDescription = "It's super yummy" },
+                new SpecialtyDrinkModel { DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
+                new SpecialtyDrinkModel { DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
+                new SpecialtyDrinkModel { DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
+                new SpecialtyDrinkModel { DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
+            };
+
             var rsvp = new RSVP
             {
                 GuestOneId = guestOne.Id,
                 GuestOneName = guestOne.FullName,
                 GuestTwoId = guestTwo.Id,
-                GuestTwoName = guestTwo.FullName
+                GuestTwoName = guestTwo.FullName,
+                DrinkRequests = specialtyDrinks,
+                DrinkItems = new SelectList(specialtyDrinks.Select(sd => sd.DrinkName))
             };
 
             return View(rsvp);

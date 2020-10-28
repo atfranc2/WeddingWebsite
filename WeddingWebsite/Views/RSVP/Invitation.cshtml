@@ -2,228 +2,21 @@
 @{
     ViewData["Title"] = "RSVP";
 }
-
-@*    <form id="attendenceForm">
-        <div id="guestAttentence">
-            <div class="form-group row">
-                <div class="col-sm-2">
-                    <label class="form-check-label" for="guestOneAttending">
-                        @Model.GuestOneName
-                    </label>
-                </div>
-                <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestOneAttendence">
-                    <label class="btn btn-outline-info">
-                        <input type="radio" name="options" id="guestOneAttending" required autocomplete="off"> Accept
-                    </label>
-                    <label class="btn btn-outline-info">
-                        <input type="radio" name="options" id="guestOneNotAttending" autocomplete="off"> Decline
-                    </label>
-                </div>
-            </div>
-            @if (Model.GuestTwoName != null)
-            {
-                <div class="form-group row">
-                    <div class="col-sm-2">
-                        <label class="form-check-label" for="guestTwoAttending">
-                            @Model.GuestTwoName
-                        </label>
-                    </div>
-                    <div class="btn-group btn-group-toggle col-sm-3" data-toggle="buttons" id="guestTwoAttendence">
-                        <label class="btn btn-outline-info">
-                            <input type="radio" name="options2" id="guestTwoAttending" required autocomplete="off"> Accept
-                        </label>
-                        <label class="btn btn-outline-info">
-                            <input type="radio" name="options2" id="guestTwoNotAttending" autocomplete="off"> Decline
-                        </label>
-                    </div>
-                </div>
-            }
-        </div>
-        <button class="btn btn-primary" type="submit" id="nextGuestAttendence">Next</button>
-    </form>
-    <form id="contactInformationForm"  style="display:none">
-        <div id="contactInformation">
-            <div class="form-group">
-                <label>Email Address</label>
-                <div class="tt-container">
-                    <input id="emailAddress" required type="email" value="" class="form-control" />
-                </div>
-            </div>
-            <button class="btn btn-primary" type="button" id="prevContactInformation">Previous</button>
-            <button class="btn btn-primary" type="submit" id="nextGuestContactInfo">Next</button>
-        </div>
-    </form>
-    <form id="timelineForm" style="display:none">
-        <div class="form-group">
-            <label>Day of Arrival</label>
-            <div class="tt-container">
-                <input id="arrivalDay" required type="date" value="" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Time of Arrival</label>
-            <div class="tt-container">
-                <input id="arrivalTime" required type="time" value="" class="form-control" />
-            </div>
-        </div>
-        <button class="btn btn-primary" type="button" id="prevGuestContactInfo">Previous</button>
-        <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
-    </form>*@
-<form id="songRequestForm">
-    <div class="form-group">
-        <div class="row">
-            <div class="col">
-                <input type="text" class="form-control" id="songArtist" placeholder="Song Artist">
-                <div class="invalid-feedback" id="invalidArtist">Song Artist Cannot Be Blank</div>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control" id="songName" placeholder="Song Name">
-                <div class="invalid-feedback" id="invalidSong">Song Name Cannot Be Blank</div>
-            </div>
-            <div class="col">
-                <button class="btn btn-primary" type="button" id="addSong">Add</button>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-sm-4">
-                <ul id="songs" class="list-group"></ul>
-            </div>
-        </div>
-    </div>
-    <button class="btn btn-primary" type="button" id="prevGuestContactInfo:ssss">Previous</button>
-    <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
-</form>
-
-
+@*
+<partial name="~/Views/RSVP/PartialViews/_AttendenceForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_ContactInformationForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_TimelineForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_SongRequestForm.cshtml" model="Model" />
+*@
+<partial name="~/Views/RSVP/PartialViews/_DrinkForm.cshtml" model="Model" />
 
 @section scripts {
+    <script src="~/ViewScripts/RSVP/Invitation.js"></script>
     <script>
-        let songArtistDelimiter = "/|$|\\";
-        let songPicks = {}; 
-
-        function isValidArtist() {
-            let artist = $("#songArtist").val().trim();
-
-            return artist != "";
-        }
-
-        function isValidSongName() {
-            let song = $("#songName").val().trim();
-
-            return song != "";
-        }
-
-        function showSongErrors() {
-            if (!isValidSongName() && !isValidArtist()) {
-                $("#invalidSong").show();
-                $("#invalidArtist").show();
-            }
-
-            if (!isValidSongName())
-                $("#invalidSong").show();
-
-
-            if (!isValidArtist())
-                $("#invalidArtist").show();
-
-        }
-
-        function isValidSongRequest() {
-            return isValidSongName() && isValidArtist();
-        }
-
-        function clearSongFields() {
-            $("#songArtist").val("");
-            $("#songName").val("");
-        }
-
-        function getSongListItem(artist, song) {
-            let listItem =
-                '<li class="list-group-item" style="display:table" id="' + artist.replace(" ", "") + song.replace(" ", "") + '">' +
-                    '<a style="vertical-align:middle;display:table-cell">' + song + " by " + artist + '</a>' +
-                '<button class="btn btn-sm" style="float:right;" type="button" id="' + artist + "/|$|\\" + song + '" onclick="deleteSong(this)">' +
-                        '<i class="fa fa-times-circle" style="font-size:24px;color:red"></i>' + 
-                    '</button >' +  
-                '</li >'
-
-            return listItem; 
-
-        }
-
-        function clearSongErrors() {
-            $("#invalidSong").hide();
-            $("#invalidArtist").hide();
-        }
-
-        function deleteListItem(itemId) {
-            $("#" + itemId).remove(); 
-        }
-
-        function deleteSong(element) {
-            let keyValueList = element.id.split(songArtistDelimiter);
-            let artist = keyValueList[0];
-            let song = keyValueList[1];
-            deleteListItem(artist.replace(" ", "") + song.replace(" ", "")); 
-
-            if (songPicks[artist].length == 1)
-                delete songPicks[artist];
-            else {
-                let songIndex = songPicks[artist].indexOf(song); 
-                songPicks[artist].splice(songIndex, 1);
-            }
-        }
-
-        function artistInDict(artist) {
-            return songPicks[artist] !== undefined; 
-        }
-
-        function songInArtistSongList(artist, song) {
-            return songPicks[artist].includes(song);
-        }
-
-        function addSongToList(artist, song) {
-            let addSong = false; 
-            if (artistInDict(artist)) {
-                if (!songInArtistSongList(artist, song)) {
-                    songPicks[artist].push(song);
-                    addSong = true;
-                }
-            }
-            else {
-                songPicks[artist] = [song];
-                addSong = true;
-            }
-
-            if (addSong)
-                $("#songs").append(getSongListItem(artist, song));
-        }
-
-        function addSong() {
-            $("#addSong").click(function () {
-                clearSongErrors(); 
-                if (!isValidSongRequest()) {
-                    showSongErrors();
-                    return false;
-                };
-
-                let song = $("#songName")
-                    .val()
-                    .trim()
-                    .toLowerCase();
-                let artist = $("#songArtist")
-                    .val()
-                    .trim()
-                    .toLowerCase();
-
-                
-                addSongToList(artist, song); 
-                clearSongFields();
-            });
-        }
 
         $(document).ready(function () {
-            addSong();
+            addSongListener();
+
             $("#attendenceForm").submit(function (e) {
                 e.preventDefault();
                 $("#attendenceForm").hide();
@@ -250,6 +43,17 @@
                 e.preventDefault();
                 $("#timelineForm").hide();
                 $("#songRequestForm").show();
+            });
+
+            $("#prevSongRequestForm").click(function () {
+                $("#songRequestForm").show();
+                $("#drinkForm").hide();
+            });
+
+            $("#songRequestForm").submit(function (e) {
+                e.preventDefault();
+                $("#songRequestForm").hide();
+                $("#drinkForm").show();
             });
         })
     </script>

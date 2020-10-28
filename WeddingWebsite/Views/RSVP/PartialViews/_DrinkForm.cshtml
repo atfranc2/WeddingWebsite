@@ -1,0 +1,9 @@
+﻿@model WeddingWebsite.Models.RSVP
+<form id="drinkForm" >
+    <div class="form-group">
+        <label for="select-drinks">Select Two Drinks For the Reception:</label>
+        <select multiple="multiple" class="form-control" id="select-drinks" asp-for="DrinkRequests" asp-items="@Model.DrinkItems"></select>
+    </div>
+    <button class="btn btn-primary" type="button" id="prevSongRequestForm">Previous</button>
+    <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
+</form>

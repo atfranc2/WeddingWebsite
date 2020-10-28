@@ -13,6 +13,8 @@
     <Compile Remove="Data\Migrations\20201014222225_UpdateDB.Designer.cs" />
     <Compile Remove="Data\Migrations\20201014222349_UpdateDB.cs" />
     <Compile Remove="Data\Migrations\20201014222349_UpdateDB.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201028184732_AlteredDrinkRequestsInRSVPModelToBeIEnumerableOfSpecialtyDrinkModels.cs" />
+    <Compile Remove="Data\Migrations\20201028184732_AlteredDrinkRequestsInRSVPModelToBeIEnumerableOfSpecialtyDrinkModels.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Images\Flower.png" />
+    <None Include="wwwroot\ViewScripts\RSVP\Invitation.js" />
   </ItemGroup>
 
 </Project>

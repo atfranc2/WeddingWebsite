@@ -1,0 +1,25 @@
+﻿<form id="songRequestForm" style="display:none">
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" id="songArtist" placeholder="Song Artist">
+                <div class="invalid-feedback" id="invalidArtist">Song Artist Cannot Be Blank</div>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="songName" placeholder="Song Name">
+                <div class="invalid-feedback" id="invalidSong">Song Name Cannot Be Blank</div>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" type="button" id="addSong">Add</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-8">
+                <ul id="songs" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button" id="prevGuestContactInfo">Previous</button>
+    <button class="btn btn-primary" type="submit" id="nextSongRequests">Next</button>
+</form>

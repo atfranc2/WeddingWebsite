@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace WeddingWebsite.Models
 
         public IEnumerable<SongRequest> SongRequests { get; set; }
 
-        public IEnumerable<string> DrinkRequests { get; set; }
+        public IEnumerable<SpecialtyDrinkModel> DrinkRequests { get; set; }
+        public SelectList DrinkItems { get; set; }
 
         public string MarriageAdvice { get; set; }
     }
