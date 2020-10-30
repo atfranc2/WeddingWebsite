@@ -3,19 +3,31 @@
     ViewData["Title"] = "RSVP";
 }
 @*
-<partial name="~/Views/RSVP/PartialViews/_AttendenceForm.cshtml" model="Model" />
-<partial name="~/Views/RSVP/PartialViews/_ContactInformationForm.cshtml" model="Model" />
-<partial name="~/Views/RSVP/PartialViews/_TimelineForm.cshtml" model="Model" />
-<partial name="~/Views/RSVP/PartialViews/_SongRequestForm.cshtml" model="Model" />
+    <partial name="~/Views/RSVP/PartialViews/_AttendenceForm.cshtml" model="Model" />
+    <partial name="~/Views/RSVP/PartialViews/_ContactInformationForm.cshtml" model="Model" />
+    <partial name="~/Views/RSVP/PartialViews/_TimelineForm.cshtml" model="Model" />
+    <partial name="~/Views/RSVP/PartialViews/_SongRequestForm.cshtml" model="Model" />
 *@
 <partial name="~/Views/RSVP/PartialViews/_DrinkForm.cshtml" model="Model" />
 
 @section scripts {
     <script src="~/ViewScripts/RSVP/Invitation.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <script>
 
         $(document).ready(function () {
+            $('#drink-information').popover({
+                container: 'body',
+                html: true,
+                trigger: 'hover',
+                content: function () {
+                    return $('#drink-list').html();
+                }
+            });
+
             addSongListener();
+            $("#selectDrinks").selectpicker();
 
             $("#attendenceForm").submit(function (e) {
                 e.preventDefault();

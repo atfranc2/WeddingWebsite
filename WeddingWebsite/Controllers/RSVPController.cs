@@ -91,17 +91,16 @@ namespace WeddingWebsite.Controllers
 
             var guestOne = _context.Guests.FirstOrDefault(g => g.Id == guestId);
 
-            Couple couple = new Couple();
             Guest guestTwo = new Guest();
             if (guestOne.PartOfCouple)
             {
-                couple = LookupCouple(guestId); 
+                Couple couple = LookupCouple(guestId); 
                 guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
             }
 
             var specialtyDrinks = new List<SpecialtyDrinkModel>
             {
-                new SpecialtyDrinkModel { DrinkName = "Super Yum",DrinkDescription = "It's super yummy" },
+                new SpecialtyDrinkModel { DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
                 new SpecialtyDrinkModel { DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
                 new SpecialtyDrinkModel { DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
                 new SpecialtyDrinkModel { DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
@@ -115,7 +114,7 @@ namespace WeddingWebsite.Controllers
                 GuestTwoId = guestTwo.Id,
                 GuestTwoName = guestTwo.FullName,
                 DrinkRequests = specialtyDrinks,
-                DrinkItems = new SelectList(specialtyDrinks.Select(sd => sd.DrinkName))
+                DrinkItems = specialtyDrinks.ToList()
             };
 
             return View(rsvp);
@@ -132,50 +131,6 @@ namespace WeddingWebsite.Controllers
         public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);
-        }
-
-        public IActionResult ContactInformation()
-        {
-            return View();
-        }
-
-        public IActionResult DateTimeInformation()
-        {
-            return View();
-        }
-
-        public IActionResult SongRequests()
-        {
-            return View();
-        }
-
-        public IActionResult MarriageAdvice()
-        {
-            return View();
-        }
-
-        public IActionResult RSVPForm(int guestId)
-        {
-            var guestOne = _context.Guests.FirstOrDefault(g => g.Id == guestId);
-
-            Couple couple = new Couple();
-            Guest guestTwo = new Guest();
-            if (guestOne.PartOfCouple)
-            {
-                couple = LookupCouple(guestId); 
-                guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
-            }
-
-            var rsvpViewModel = new RSVPFormViewModel
-            {
-                GuestOneId = guestOne.Id,
-                GuestOneName = guestOne.FullName,
-                GuestTwoId = guestTwo.Id,
-                GuestTwoName = guestTwo.FullName,
-                CoupleTag = couple.CoupleTag
-            };
-            
-            return View(rsvpViewModel); 
         }
 
         private Couple LookupCouple(int guestId)
