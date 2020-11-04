@@ -98,19 +98,21 @@ namespace WeddingWebsite.Controllers
                 guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
             }
 
-            var specialtyDrinks = getSpecialtyDrinks(); 
-
             var rsvp = new RSVP
             {
                 GuestOneId = guestOne.Id,
                 GuestOneName = guestOne.FullName,
                 GuestTwoId = guestTwo.Id,
-                GuestTwoName = guestTwo.FullName,
-                DrinkRequests = specialtyDrinks,
-                DrinkItems = specialtyDrinks.ToList()
+                GuestTwoName = guestTwo.FullName
             };
 
-            return View(rsvp);
+            var invitationViewModel = new InvitationViewModel
+            {
+                RSVP = rsvp,
+                DrinkItems = getSpecialtyDrinks().ToList()
+            };
+
+            return View(invitationViewModel);
         }
 
         [HttpPost]
@@ -118,26 +120,18 @@ namespace WeddingWebsite.Controllers
         {
             var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault();
 
-            rsvp.DrinkItems = getSpecialtyDrinks().ToList(); 
+            var invitationViewModel = new InvitationViewModel
+            {
+                RSVP = rsvp,
+                DrinkItems = getSpecialtyDrinks().ToList()
+            };
 
-            return View(rsvp);
+            return View(invitationViewModel);
         }
 
         public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);
-        }
-
-        [HttpPost]
-        public IActionResult SubmitRSVP(RSVP rsvp)
-        {
-            var blah = rsvp.ContactEmail; 
-            if (!ModelState.IsValid)
-            {
-                return View("Invitation", rsvp);
-            }
-
-            return View("RSVPSubmitSuccess"); 
         }
 
         private Couple LookupCouple(int guestId)
@@ -165,8 +159,8 @@ namespace WeddingWebsite.Controllers
         }
     }
 
-    
 }
+
 
 class RSVPComparer : IEqualityComparer<RSVP>
 {

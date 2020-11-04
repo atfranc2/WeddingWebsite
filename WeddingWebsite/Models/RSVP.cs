@@ -30,11 +30,6 @@ namespace WeddingWebsite.Models
         public DateTime DayOfArrival { get; set; }
 
         public DateTime TimeOfArrival { get; set; }
-
-        public IEnumerable<SongRequest> SongRequests { get; set; }
-
-        public IEnumerable<SpecialtyDrinkModel> DrinkRequests { get; set; }
-        public List<SpecialtyDrinkModel> DrinkItems { get; set; }
                 
         public string MarriageAdvice { get; set; }
     }

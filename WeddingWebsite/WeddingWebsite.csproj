@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Images\Flower.png" />
-    <None Include="wwwroot\ViewScripts\RSVP\Invitation.js" />
+    <None Include="wwwroot\ViewScripts\RSVP\Invitation\SongRequestForm.js" />
   </ItemGroup>
 
 </Project>

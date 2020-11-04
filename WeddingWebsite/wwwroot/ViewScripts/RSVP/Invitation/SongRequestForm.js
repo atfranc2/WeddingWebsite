@@ -1,6 +1,4 @@
-﻿let songArtistDelimiter = "/|$|\\";
-let songPicks = {};
-
+﻿
 function isValidArtist() {
     let artist = $("#songArtist").val().trim();
 
@@ -95,6 +93,25 @@ function addSongToList(artist, song) {
 
     if (addSong)
         $("#songs").append(getSongListItem(artist, song));
+}
+
+function unpackSongPicks() {
+    let songList = [];
+    let artistList = [];
+    for (let artist in songPicks) {
+        artistList = [
+            ...artistList,
+            ...Array(songPicks[artist].length).fill(artist)
+        ];
+        songList = [
+            ...songList,
+            ...songPicks[artist]
+        ];
+    }
+
+    songRequestViewModel["songList"] = songList;
+    songRequestViewModel["artistList"] = artistList;
+
 }
 
 function addSongListener() {

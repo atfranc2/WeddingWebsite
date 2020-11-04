@@ -1,85 +1,22 @@
-﻿@model WeddingWebsite.Models.RSVP
+﻿@model WeddingWebsite.ViewModels.InvitationViewModel
 @{
     ViewData["Title"] = "RSVP";
 }
 
-        <partial name="~/Views/RSVP/PartialViews/_AttendenceForm.cshtml" model="Model" />
-        <partial name="~/Views/RSVP/PartialViews/_ContactInformationForm.cshtml" model="Model" />
-        <partial name="~/Views/RSVP/PartialViews/_TimelineForm.cshtml" model="Model" />
-        <partial name="~/Views/RSVP/PartialViews/_SongRequestForm.cshtml" model="Model" />
-        <partial name="~/Views/RSVP/PartialViews/_DrinkForm.cshtml" model="Model" />
-        <partial name="~/Views/RSVP/PartialViews/_MarriageAdviceForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_AttendenceForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_ContactInformationForm.cshtml" />
+<partial name="~/Views/RSVP/PartialViews/_TimelineForm.cshtml" />
+<partial name="~/Views/RSVP/PartialViews/_SongRequestForm.cshtml" />
+<partial name="~/Views/RSVP/PartialViews/_DrinkForm.cshtml" model="Model" />
+<partial name="~/Views/RSVP/PartialViews/_MarriageAdviceForm.cshtml" />
 
 
 @section scripts {
-    <script src="~/ViewScripts/RSVP/Invitation.js"></script>
     <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
     <link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <script>
 
-        $(document).ready(function () {
-            $('#drink-information').popover({
-                container: 'body',
-                html: true,
-                trigger: 'hover',
-                content: function () {
-                    return $('#drink-list').html();
-                }
-            });
-
-            addSongListener();
-
-            $("#selectDrinks").selectpicker();
-
-            $("#attendenceForm").submit(function (e) {
-                e.preventDefault();
-                $("#attendenceForm").hide();
-                $("#contactInformationForm").show();
-            });
-
-            $("#prevContactInformation").click(function () {
-                $("#contactInformationForm").hide();
-                $("#attendenceForm").show();
-            });
-
-            $("#contactInformationForm").submit(function (e) {
-                e.preventDefault();
-                $("#contactInformationForm").hide();
-                $("#timelineForm").show();
-            });
-
-            $("#prevGuestContactInfo").click(function () {
-                $("#contactInformationForm").show();
-                $("#timelineForm").hide();
-            });
-
-            $("#timelineForm").submit(function (e) {
-                e.preventDefault();
-                $("#timelineForm").hide();
-                $("#songRequestForm").show();
-            });
-
-            $("#prevSongRequestForm").click(function () {
-                $("#songRequestForm").show();
-                $("#drinkForm").hide();
-            });
-
-            $("#songRequestForm").submit(function (e) {
-                e.preventDefault();
-                $("#songRequestForm").hide();
-                $("#drinkForm").show();
-            });
-
-            $("#prevDrinkForm").click(function () {
-                $("#drinkForm").show();
-                $("#marriageAdviceForm").hide();
-            });
-
-            $("#drinkForm").submit(function (e) {
-                e.preventDefault();
-                $("#drinkForm").hide();
-                $("#marriageAdviceForm").show();
-            });
-        })
-    </script>
+    <script src="~/ViewScripts/RSVP/Invitation/InitializeGlobalVariables.js"></script>
+    <script src="~/ViewScripts/RSVP/Invitation/SongRequestForm.js"></script>
+    <script src="~/ViewScripts/RSVP/Invitation/ButtonFunctions.js"></script>
+    <script src="~/ViewScripts/RSVP/Invitation/DocumnetReady.js"></script>
 }

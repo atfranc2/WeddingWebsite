@@ -1,4 +1,4 @@
-﻿@model WeddingWebsite.Models.RSVP
+﻿@model WeddingWebsite.ViewModels.InvitationViewModel
 <form id="drinkForm" style="display:none">
     <div class="form-group">
         <label for="select-drinks">
@@ -6,7 +6,7 @@
             <i class="fas fa-info-circle" id="drink-information" data-toggle="popver" title="Drink Descriptions"></i>
         </label>
         <br />
-        <select multiple="multiple" class="selectpicker" data-width="50%" data-max-options="2" title="Choose two of the following..." id="selectDrinks" asp-for="DrinkRequests">
+        <select multiple="multiple" class="selectpicker" data-width="50%" data-max-options="2" title="Choose two of the following..." id="selectDrinks">
             @for (var index = 0; index < Model.DrinkItems.Count(); index++)
             {
                 var drinkName = @Model.DrinkItems[index].DrinkName;
