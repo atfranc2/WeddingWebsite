@@ -35,7 +35,7 @@ namespace WeddingWebsite.Models
 
         public IEnumerable<SpecialtyDrinkModel> DrinkRequests { get; set; }
         public List<SpecialtyDrinkModel> DrinkItems { get; set; }
-
+                
         public string MarriageAdvice { get; set; }
     }
 }

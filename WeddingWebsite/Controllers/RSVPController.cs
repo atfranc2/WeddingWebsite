@@ -98,14 +98,7 @@ namespace WeddingWebsite.Controllers
                 guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
             }
 
-            var specialtyDrinks = new List<SpecialtyDrinkModel>
-            {
-                new SpecialtyDrinkModel { DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
-                new SpecialtyDrinkModel { DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
-                new SpecialtyDrinkModel { DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
-                new SpecialtyDrinkModel { DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
-                new SpecialtyDrinkModel { DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
-            };
+            var specialtyDrinks = getSpecialtyDrinks(); 
 
             var rsvp = new RSVP
             {
@@ -123,14 +116,28 @@ namespace WeddingWebsite.Controllers
         [HttpPost]
         public IActionResult Invitation(GuestConfirmationViewModel viewModel)
         {
-            var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault(); 
-            
+            var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault();
+
+            rsvp.DrinkItems = getSpecialtyDrinks().ToList(); 
+
             return View(rsvp);
         }
 
         public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);
+        }
+
+        [HttpPost]
+        public IActionResult SubmitRSVP(RSVP rsvp)
+        {
+            var blah = rsvp.ContactEmail; 
+            if (!ModelState.IsValid)
+            {
+                return View("Invitation", rsvp);
+            }
+
+            return View("RSVPSubmitSuccess"); 
         }
 
         private Couple LookupCouple(int guestId)
@@ -142,7 +149,23 @@ namespace WeddingWebsite.Controllers
 
             return couple; 
         }
+
+        private List<SpecialtyDrinkModel> getSpecialtyDrinks()
+        {
+            var specialtyDrinks = new List<SpecialtyDrinkModel>
+            {
+                new SpecialtyDrinkModel { DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
+                new SpecialtyDrinkModel { DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
+                new SpecialtyDrinkModel { DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
+                new SpecialtyDrinkModel { DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
+                new SpecialtyDrinkModel { DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
+            };
+
+            return specialtyDrinks; 
+        }
     }
+
+    
 }
 
 class RSVPComparer : IEqualityComparer<RSVP>
