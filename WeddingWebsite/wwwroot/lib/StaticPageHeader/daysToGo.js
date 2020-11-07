@@ -11,7 +11,7 @@ function getDaysToGo() {
     let weddingDay = new Date(2021, 3, 23);
     let dateDiff = weddingDay.getTime() - today.getTime();
 
-    return dateDiff / 86400000;
+    return Math.round(dateDiff / 86400000);
 }
 
 $(document).ready(function () {
