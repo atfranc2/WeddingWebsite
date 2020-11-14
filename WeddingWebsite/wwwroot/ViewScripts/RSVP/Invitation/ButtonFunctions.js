@@ -68,8 +68,8 @@ function drinkFormButtons() {
 function marriageAdviceFormButtons() {
     $("#marriageAdviceForm").submit(function (e) {
         e.preventDefault();
-        $("#drinkForm").hide();
-        $("#marriageAdviceForm").show();
+        console.log(getDrinkModel());
+
     });
 
     $("#prevDrinkForm").click(function () {

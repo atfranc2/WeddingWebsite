@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WeddingWebsite.Models
 {
-    public class SongRequest
+    public class DrinkRequest
     {
         public int Id { get; set; }
 
@@ -13,8 +13,8 @@ namespace WeddingWebsite.Models
 
         public Guest Guest { get; set; }
 
-        public string SongTitle { get; set; }
+        public int SpecialtyDrinkModelId { get; set; }
 
-        public string SongArtist { get; set; }
+        public SpecialtyDrinkModel SpecialtyDrinkModel { get; set; }
     }
 }

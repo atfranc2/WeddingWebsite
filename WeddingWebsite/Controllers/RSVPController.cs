@@ -148,11 +148,11 @@ namespace WeddingWebsite.Controllers
         {
             var specialtyDrinks = new List<SpecialtyDrinkModel>
             {
-                new SpecialtyDrinkModel { DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
-                new SpecialtyDrinkModel { DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
-                new SpecialtyDrinkModel { DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
-                new SpecialtyDrinkModel { DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
-                new SpecialtyDrinkModel { DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
+                new SpecialtyDrinkModel { Id = 1, DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
+                new SpecialtyDrinkModel { Id = 2, DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
+                new SpecialtyDrinkModel { Id = 3,DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
+                new SpecialtyDrinkModel { Id = 4,DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
+                new SpecialtyDrinkModel { Id = 5,DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
             };
 
             return specialtyDrinks; 

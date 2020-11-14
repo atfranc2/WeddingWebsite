@@ -15,8 +15,29 @@
     <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
     <link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
+    <script>
+        let guestId = @Model.RSVP.GuestOneId;
+        function getDrinkModel() {
+            let DrinkModel = [];
+            let drinkRequests = $("#selectDrinks :selected");
+            for (let drink of drinkRequests) {
+                drinkName = $(drink).attr('drink-name');
+                drinkId = $(drink).attr('drink-id');
+                let drinkVM = {
+                    "GuestId": guestId,
+                    "SpecialtyDrinkModelId": Number(drinkId)
+                };
+
+                DrinkModel.push(drinkVM); 
+            }
+
+            return DrinkModel; 
+        }
+    </script>
+
     <script src="~/ViewScripts/RSVP/Invitation/InitializeGlobalVariables.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/SongRequestForm.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/ButtonFunctions.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/DocumnetReady.js"></script>
+
 }

@@ -11,7 +11,8 @@ let rsvpViewModel = {
     "guestTag": "@Model.RSVP.GuestTag"
 };
 let drinkRequestViewModel = {
-    "drinkRequests": []
+    "drinkRequests": [],
+    "referenceObjects": []
 };
 let songRequestViewModel = {
     "songList": [],

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeddingWebsite.Data;
 
 namespace WeddingWebsite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201114182430_AddedRSVPModel")]
+    partial class AddedRSVPModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +259,7 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<int?>("RSVPId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SpecialtyDrinkModelId")
+                    b.Property<int>("SpecialtyDrinkModelID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -266,7 +268,7 @@ namespace WeddingWebsite.Data.Migrations
 
                     b.HasIndex("RSVPId");
 
-                    b.HasIndex("SpecialtyDrinkModelId");
+                    b.HasIndex("SpecialtyDrinkModelID");
 
                     b.ToTable("DrinkRequests");
                 });
@@ -472,7 +474,7 @@ namespace WeddingWebsite.Data.Migrations
 
                     b.HasOne("WeddingWebsite.Models.SpecialtyDrinkModel", "SpecialtyDrinkModel")
                         .WithMany()
-                        .HasForeignKey("SpecialtyDrinkModelId")
+                        .HasForeignKey("SpecialtyDrinkModelID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

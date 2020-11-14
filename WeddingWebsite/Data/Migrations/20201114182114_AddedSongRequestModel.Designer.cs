@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeddingWebsite.Data;
 
 namespace WeddingWebsite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201114182114_AddedSongRequestModel")]
+    partial class AddedSongRequestModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,33 +246,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.ToTable("Couples");
                 });
 
-            modelBuilder.Entity("WeddingWebsite.Models.DrinkRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GuestId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RSVPId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpecialtyDrinkModelId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuestId");
-
-                    b.HasIndex("RSVPId");
-
-                    b.HasIndex("SpecialtyDrinkModelId");
-
-                    b.ToTable("DrinkRequests");
-                });
-
             modelBuilder.Entity("WeddingWebsite.Models.Guest", b =>
                 {
                     b.Property<int>("Id")
@@ -301,51 +276,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.ToTable("Guests");
                 });
 
-            modelBuilder.Entity("WeddingWebsite.Models.RSVP", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ContactEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DayOfArrival")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("GuestOneAccepts")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("GuestOneId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GuestOneName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuestTag")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("GuestTwoAccepts")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("GuestTwoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GuestTwoName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MarriageAdvice")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TimeOfArrival")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RSVPs");
-                });
-
             modelBuilder.Entity("WeddingWebsite.Models.SongRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -354,9 +284,6 @@ namespace WeddingWebsite.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("GuestId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RSVPId")
                         .HasColumnType("int");
 
                     b.Property<string>("SongArtist")
@@ -368,8 +295,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GuestId");
-
-                    b.HasIndex("RSVPId");
 
                     b.ToTable("SongRequests");
                 });
@@ -458,25 +383,6 @@ namespace WeddingWebsite.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WeddingWebsite.Models.DrinkRequest", b =>
-                {
-                    b.HasOne("WeddingWebsite.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WeddingWebsite.Models.RSVP", null)
-                        .WithMany("DrinkRequests")
-                        .HasForeignKey("RSVPId");
-
-                    b.HasOne("WeddingWebsite.Models.SpecialtyDrinkModel", "SpecialtyDrinkModel")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyDrinkModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WeddingWebsite.Models.SongRequest", b =>
                 {
                     b.HasOne("WeddingWebsite.Models.Guest", "Guest")
@@ -484,10 +390,6 @@ namespace WeddingWebsite.Data.Migrations
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("WeddingWebsite.Models.RSVP", null)
-                        .WithMany("SongRequests")
-                        .HasForeignKey("RSVPId");
                 });
 #pragma warning restore 612, 618
         }

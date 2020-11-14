@@ -12,10 +12,9 @@
                 var drinkName = @Model.DrinkItems[index].DrinkName;
                 var drinkDescription = @Model.DrinkItems[index].DrinkDescription;
 
-                <option>
+                <option drink-id="@Model.DrinkItems[index].Id" drink-name=" @Model.DrinkItems[index].DrinkName">
                     @drinkName
                 </option>
-
             }
         </select>
     </div>
