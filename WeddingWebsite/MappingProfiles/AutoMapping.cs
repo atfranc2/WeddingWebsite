@@ -17,6 +17,9 @@ namespace WeddingWebsite.MappingProfiles
 
             CreateMap<Couple, CoupleDto>();
             CreateMap<CoupleDto, Couple>();
+
+            CreateMap<RSVP, RSVPDto>();
+            CreateMap<RSVPDto, RSVP>(); 
         }
     }
 }

@@ -26,7 +26,7 @@ function timelineFormButtons() {
     $("#timelineForm").submit(function (e) {
         e.preventDefault();
         $("#timelineForm").hide();
-        rsvpViewModel["dayOfArrival"] = $("#arrivalDay").val();
+        rsvpViewModel["dayOfArrival"] = $("#arrivalDay").val(); 
         rsvpViewModel["timeOfArrival"] = $("#arrivalTime").val();
         $("#songRequestForm").show();
     });
@@ -42,6 +42,7 @@ function songRequestFormButtons() {
         e.preventDefault();
         $("#songRequestForm").hide();
         unpackSongPicks();
+        rsvpViewModel.songRequests = getSongRequestModel(); 
         $("#drinkForm").show();
     });
 
@@ -55,22 +56,17 @@ function drinkFormButtons() {
     $("#drinkForm").submit(function (e) {
         e.preventDefault();
         $("#drinkForm").hide();
+        rsvpViewModel.drinkRequests = getDrinkModel(); 
         $("#marriageAdviceForm").show();
     });
 
     $("#prevSongRequestForm").click(function () {
         $("#drinkForm").hide();
-        drinkRequestViewModel = $("#selectDrinks").val();
         $("#songRequestForm").show();
     });
 }
 
 function marriageAdviceFormButtons() {
-    $("#marriageAdviceForm").submit(function (e) {
-        e.preventDefault();
-        console.log(getDrinkModel());
-
-    });
 
     $("#prevDrinkForm").click(function () {
         $("#drinkForm").show();

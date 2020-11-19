@@ -17,27 +17,47 @@
 
     <script>
         let guestId = @Model.RSVP.GuestOneId;
-        function getDrinkModel() {
-            let DrinkModel = [];
-            let drinkRequests = $("#selectDrinks :selected");
-            for (let drink of drinkRequests) {
-                drinkName = $(drink).attr('drink-name');
-                drinkId = $(drink).attr('drink-id');
-                let drinkVM = {
-                    "GuestId": guestId,
-                    "SpecialtyDrinkModelId": Number(drinkId)
-                };
 
-                DrinkModel.push(drinkVM); 
-            }
-
-            return DrinkModel; 
-        }
+        const rsvpViewModel = {
+            "guestOneId": @Model.RSVP.GuestOneId,
+            "guestOneName": "@Model.RSVP.GuestOneName",
+            "guestTwoId": @Model.RSVP.GuestTwoId,
+            "guestTwoName": "@Model.RSVP.GuestTwoName",
+            "guestTag": "@Model.RSVP.GuestTag",
+            "contactEmail": "",
+            "guestOneAccepts": "",
+            "guestTwoAccepts": "",
+            "dayOfArrival": "",
+            "timeOfArrival": "",
+            "marriageAdvice": "",
+            "songRequests": [],
+            "drinkRequests": []
+        };
+        
     </script>
 
+    <script src="~/ViewScripts/RSVP/Invitation/BuildViewModels.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/InitializeGlobalVariables.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/SongRequestForm.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/ButtonFunctions.js"></script>
     <script src="~/ViewScripts/RSVP/Invitation/DocumnetReady.js"></script>
+
+    <script>
+
+        $("#marriageAdviceForm").submit(function (e) {
+            e.preventDefault();
+            rsvpViewModel.marriageAdvice = $("#marriageAdvice").val(); 
+            console.log(JSON.stringify(rsvpViewModel));
+
+            $.ajax({
+                url: "/api/RSVPs",
+                method: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify(rsvpViewModel)
+            });
+        });
+
+
+    </script>
 
 }

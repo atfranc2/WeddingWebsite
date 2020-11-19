@@ -103,7 +103,8 @@ namespace WeddingWebsite.Controllers
                 GuestOneId = guestOne.Id,
                 GuestOneName = guestOne.FullName,
                 GuestTwoId = guestTwo.Id,
-                GuestTwoName = guestTwo.FullName
+                GuestTwoName = guestTwo.FullName,
+                GuestTag = (guestTwo.FullName == null) ? guestOne.FullName : guestOne.FullName + " & " + guestTwo.FullName
             };
 
             var invitationViewModel = new InvitationViewModel
@@ -119,6 +120,7 @@ namespace WeddingWebsite.Controllers
         public IActionResult Invitation(GuestConfirmationViewModel viewModel)
         {
             var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault();
+            rsvp.GuestTag = viewModel.GuestTag; 
 
             var invitationViewModel = new InvitationViewModel
             {
