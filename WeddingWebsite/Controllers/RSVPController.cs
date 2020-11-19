@@ -131,6 +131,11 @@ namespace WeddingWebsite.Controllers
             return View(invitationViewModel);
         }
 
+        public IActionResult RSVPSubmitSuccess()
+        {
+            return View(); 
+        }
+
         public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);

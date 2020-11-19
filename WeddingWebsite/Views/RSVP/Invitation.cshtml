@@ -54,7 +54,13 @@
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify(rsvpViewModel)
-            });
+            })
+                .done(function () {
+                    window.location.href = "/RSVP/RSVPSubmitSuccess"; 
+                })
+                .fail(function () {
+
+                });
         });
 
 
