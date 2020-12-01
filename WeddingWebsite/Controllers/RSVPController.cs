@@ -19,7 +19,7 @@ namespace WeddingWebsite.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly CouplesController _couples;
-        private readonly GuestsController _guests; 
+        private readonly GuestsController _guests;
 
         public RSVPController(ApplicationDbContext context, IMapper mapper)
         {
@@ -27,7 +27,7 @@ namespace WeddingWebsite.Controllers
             _mapper = mapper;
 
             _couples = new CouplesController(_context, _mapper);
-            _guests = new GuestsController(_context, _mapper); 
+            _guests = new GuestsController(_context, _mapper);
         }
 
         public IActionResult Index()
@@ -41,11 +41,11 @@ namespace WeddingWebsite.Controllers
 
             if (canidates.Count() == 0)
             {
-                return View("GuestNotFound"); 
+                return View("GuestNotFound");
             }
 
-            var rsvps = new List<RSVP>(); 
-            foreach(var canidate in canidates)
+            var rsvps = new List<RSVP>();
+            foreach (var canidate in canidates)
             {
                 if (canidate.PartOfCouple)
                 {
@@ -89,12 +89,15 @@ namespace WeddingWebsite.Controllers
         public IActionResult Invitation(int guestId)
         {
 
+            if (RSVPWasAlreadyRecieved(guestId))
+                return View("RSVPAlreadySubmitted"); 
+
             var guestOne = _context.Guests.FirstOrDefault(g => g.Id == guestId);
 
             Guest guestTwo = new Guest();
             if (guestOne.PartOfCouple)
             {
-                Couple couple = LookupCouple(guestId); 
+                Couple couple = LookupCouple(guestId);
                 guestTwo = (couple.GuestOneId == guestId) ? couple.GuestTwo : couple.GuestOne;
             }
 
@@ -120,7 +123,10 @@ namespace WeddingWebsite.Controllers
         public IActionResult Invitation(GuestConfirmationViewModel viewModel)
         {
             var rsvp = viewModel.RSVPs.Where(r => r.GuestTag == viewModel.GuestTag).SingleOrDefault();
-            rsvp.GuestTag = viewModel.GuestTag; 
+            rsvp.GuestTag = viewModel.GuestTag;
+
+            if (RSVPWasAlreadyRecieved(rsvp.GuestOneId))
+                return View("RSVPAlreadySubmitted");
 
             var invitationViewModel = new InvitationViewModel
             {
@@ -133,12 +139,19 @@ namespace WeddingWebsite.Controllers
 
         public IActionResult RSVPSubmitSuccess()
         {
-            return View(); 
+            return View();
         }
 
         public IActionResult Create(RSVP rsvp)
         {
             return View(rsvp);
+        }
+
+        private bool RSVPWasAlreadyRecieved(int guestId)
+        {
+            var wasRecieved = _context.RSVPs.Where(m => m.GuestOneId == guestId || m.GuestTwoId == guestId).FirstOrDefault(); 
+
+            return wasRecieved != null;
         }
 
         private Couple LookupCouple(int guestId)
@@ -153,14 +166,7 @@ namespace WeddingWebsite.Controllers
 
         private List<SpecialtyDrinkModel> getSpecialtyDrinks()
         {
-            var specialtyDrinks = new List<SpecialtyDrinkModel>
-            {
-                new SpecialtyDrinkModel { Id = 1, DrinkName = "Super Yum", DrinkDescription = "It's super yummy" },
-                new SpecialtyDrinkModel { Id = 2, DrinkName = "Chocholate Bomb", DrinkDescription = "SOOOOOOOOOO much Chocholate" },
-                new SpecialtyDrinkModel { Id = 3,DrinkName = "Big Buzz", DrinkDescription = "Many Alcohols" },
-                new SpecialtyDrinkModel { Id = 4,DrinkName = "Pucker Up", DrinkDescription = "There's pickle juice yo" },
-                new SpecialtyDrinkModel { Id = 5,DrinkName = "Wait... I'm a hobbit?", DrinkDescription = "This one may be laced with drugs" }
-            };
+            var specialtyDrinks = _context.DrinkSpecials.ToList(); 
 
             return specialtyDrinks; 
         }
