@@ -15,10 +15,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WeddingWebsite.Data;
+using WeddingWebsite.Models;
 
 namespace WeddingWebsite.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Roles = RoleNames.Administrator)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -87,9 +88,9 @@ namespace WeddingWebsite.Areas.Identity.Pages.Account
                 {
 
                     // Temporary User Role Set Up
-                    var role = new IdentityRole();
-                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                    await _userManager.AddToRoleAsync(user, "Admin"); 
+/*                    var role = new IdentityRole();
+                    await _roleManager.CreateAsync(new IdentityRole("Guest"));
+                    await _userManager.AddToRoleAsync(user, "Guest"); */
 
                     _logger.LogInformation("User created a new account with password.");
 
