@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
+    <Folder Include="wwwroot\Images\PhotosPagePictures\" />
   </ItemGroup>
 
 </Project>

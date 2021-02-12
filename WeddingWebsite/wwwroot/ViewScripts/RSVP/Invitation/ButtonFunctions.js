@@ -1,11 +1,36 @@
 ﻿function attendenceFormButtons() {
-    $("#attendenceForm").submit(function (e) {
+    $("#attendenceForm").submit( async function (e) {
         e.preventDefault();
         $("#attendenceForm").hide();
-        rsvpViewModel["guestOneAccepts"] = Boolean($("#guestOneAttendence :checked").val());
-        rsvpViewModel["guestTwoAccepts"] = Boolean($("#guestTwoAttendence :checked").val());
+
+        let guestOneAttending = $("#guestOneAttendence :checked").val() == "true";
+        let guestTwoAttending = $("#guestTwoAttendence :checked").val() == "true";
+
+        rsvpViewModel["guestOneAccepts"] = Boolean(guestOneAttending);
+        rsvpViewModel["guestTwoAccepts"] = Boolean(guestTwoAttending);
+
+        console.log("G1: " + guestOneAttending + " G2: " + guestOneAttending); 
+        console.log(rsvpViewModel); 
+
+        if (!guestOneAttending && !guestTwoAttending) {
+            let result = await submitDeclinedInvitation(); 
+            window.location.href = "/RSVP/RSVPSubmitSuccess"; 
+        }
+
         $("#contactInformationForm").show();
     });
+}
+
+async function submitDeclinedInvitation() {
+
+    let result = await $.ajax({
+        url: "/api/RSVPs",
+        method: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify(rsvpViewModel)
+    });
+
+    return result; 
 }
 
 function contactInformationFormButtons() {

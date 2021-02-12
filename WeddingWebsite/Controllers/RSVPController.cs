@@ -15,6 +15,7 @@ using WeddingWebsite.ViewModels;
 
 namespace WeddingWebsite.Controllers
 {
+    // /RSVP/EditRSVP/5
     [Authorize(Roles = RoleNames.Administrator + ", " + RoleNames.GuestUser)]
     public class RSVPController : Controller
     {
@@ -35,6 +36,31 @@ namespace WeddingWebsite.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Authorize(Roles = RoleNames.Administrator)]
+        [Route("RSVP/EditRSVP/{rsvpId}")]
+        public IActionResult EditRSVP([FromRoute] int rsvpId)
+        {
+            var rsvp = _context.RSVPs.FirstOrDefault(rsvp => rsvp.Id == rsvpId);
+            var selectedDrinkRequests = _context.DrinkRequests
+                .Where(dr => dr.RSVPId == rsvpId)
+                .Select(dr => dr.SpecialtyDrinkModelId)
+                .ToList();
+
+            var drinkRequests = _context.DrinkSpecials.ToList();
+
+            var songRequests = _context.SongRequests.Where(sr => sr.RSVPId == rsvpId).ToList(); 
+
+            var viewModel = new EditRSVPViewModel
+            {
+                RSVP = rsvp,
+                DrinkRequests = drinkRequests, 
+                SelectedDrinkRequests = selectedDrinkRequests,
+                SongRequests = songRequests
+            }; 
+
+            return View("EditRSVPForm", viewModel); 
         }
 
         public IActionResult GuestConfirmation(string searchString)

@@ -16,5 +16,7 @@ namespace WeddingWebsite.Models
         public int SpecialtyDrinkModelId { get; set; }
 
         public SpecialtyDrinkModel SpecialtyDrinkModel { get; set; }
+
+        public int RSVPId { get; set; }
     }
 }

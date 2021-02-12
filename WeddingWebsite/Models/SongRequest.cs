@@ -16,5 +16,7 @@ namespace WeddingWebsite.Models
         public string SongTitle { get; set; }
 
         public string SongArtist { get; set; }
+
+        public int RSVPId { get; set; }
     }
 }

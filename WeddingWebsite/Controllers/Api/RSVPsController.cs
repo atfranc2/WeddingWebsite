@@ -84,7 +84,7 @@ namespace WeddingWebsite.Controllers.Api
         [HttpPost]
         public async Task<ActionResult<RSVP>> PostRSVP(RSVPDto RSVPDto)
         {
-            var dateTime = GetDateTime(RSVPDto.DayOfArrival, RSVPDto.TimeOfArrival); 
+            var dateTime = (RSVPDto.DayOfArrival != "" && RSVPDto.TimeOfArrival != "") ? GetDateTime(RSVPDto.DayOfArrival, RSVPDto.TimeOfArrival) : DateTime.Now; 
             RSVP RSVP = _mapper.Map<RSVPDto, RSVP>(RSVPDto);
             RSVP.TimeOfArrival = dateTime;
             RSVP.DayOfArrival = dateTime; 
@@ -95,7 +95,7 @@ namespace WeddingWebsite.Controllers.Api
             _context.RSVPs.Add(RSVP);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRSVP", new { id = RSVPDto.Id }, RSVPDto);
+            return CreatedAtAction("PostRSVP", new { id = RSVPDto.Id }, RSVPDto);
         }
 
         // DELETE: api/RSVPs/5

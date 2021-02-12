@@ -254,7 +254,7 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<int>("GuestId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RSVPId")
+                    b.Property<int>("RSVPId")
                         .HasColumnType("int");
 
                     b.Property<int>("SpecialtyDrinkModelId")
@@ -356,7 +356,7 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<int>("GuestId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RSVPId")
+                    b.Property<int>("RSVPId")
                         .HasColumnType("int");
 
                     b.Property<string>("SongArtist")
@@ -468,7 +468,9 @@ namespace WeddingWebsite.Data.Migrations
 
                     b.HasOne("WeddingWebsite.Models.RSVP", null)
                         .WithMany("DrinkRequests")
-                        .HasForeignKey("RSVPId");
+                        .HasForeignKey("RSVPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WeddingWebsite.Models.SpecialtyDrinkModel", "SpecialtyDrinkModel")
                         .WithMany()
@@ -487,7 +489,9 @@ namespace WeddingWebsite.Data.Migrations
 
                     b.HasOne("WeddingWebsite.Models.RSVP", null)
                         .WithMany("SongRequests")
-                        .HasForeignKey("RSVPId");
+                        .HasForeignKey("RSVPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

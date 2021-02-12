@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,18 @@ namespace WeddingWebsite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var photoFileList = Directory.GetFiles("wwwroot/Images/HomePagePictures/");
+            var fileList = new List<string>();
+
+            foreach (var file in photoFileList)
+            {
+                var fileParts = file.Split("/");
+                var filePath = "/" + fileParts[1] + "/" + fileParts[2] + "/" + fileParts[3];
+
+                fileList.Add(filePath);
+            }
+
+            return View(fileList);
         }
 
         public IActionResult OurStory()

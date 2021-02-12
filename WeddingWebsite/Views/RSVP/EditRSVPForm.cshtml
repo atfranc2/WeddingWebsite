@@ -1,0 +1,88 @@
+﻿@model WeddingWebsite.ViewModels.EditRSVPViewModel
+
+<form id="edit-rsvp-form">
+    <input asp-for="RSVP.Id" type="hidden" />
+    <input asp-for="RSVP.GuestOneId" type="hidden" />
+    <input asp-for="RSVP.GuestTwoId" type="hidden" />
+    <input asp-for="RSVP.GuestTag" type="hidden" />
+    <h2><u>Guest Acceptance</u></h2>
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label class="form-check-label" for="guestOneAttending">
+                @Model.RSVP.GuestOneName
+            </label>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                Accept
+                <input asp-for="RSVP.GuestOneAccepts" type="radio" name="options" id="guestOneAttending" required autocomplete="off" value=True>
+            </label>
+            <label>
+                Decline
+                <input asp-for="RSVP.GuestOneAccepts" type="radio" name="options" id="guestOneNotAttending" autocomplete="off" value=False>
+            </label>
+        </div>
+    </div>
+    @if (Model.RSVP.GuestTwoName != null)
+    {
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label class="form-check-label" for="guestTwoAttending">
+                    @Model.RSVP.GuestTwoName
+                </label>
+            </div>
+            <div class="col-sm-2">
+                <label>
+                    Accept
+                    <input asp-for="RSVP.GuestTwoAccepts" type="radio" name="options2" id="guestTwoAttending" required autocomplete="off" value=True>
+                </label>
+                <label>
+                    Decline
+                    <input asp-for="RSVP.GuestTwoAccepts" type="radio" name="options2" id="guestTwoAttending" autocomplete="off" value=False>
+                </label>
+            </div>
+        </div>
+    }
+
+    <br />
+    <h2><u>Email Address</u></h2>
+    <br />
+    <input class="form-control" asp-for="RSVP.ContactEmail" type="email" />
+
+    <br />
+    <h2><u>Arrival Details</u></h2>
+    <label>Day of Arrival</label>
+    <input type="date" asp-for="RSVP.DayOfArrival" class="form-control" />
+    <br />
+    <label>Time of Arrival</label>
+    <input type="time" asp-for="RSVP.TimeOfArrival" class="form-control" />
+    <br />
+
+    <h2><u>Drink Requests</u></h2>
+    <select class="selectpicker" multiple="multiple" data-width="50%" data-max-options="2" title="Choose two of the following..." id="selectDrinks" data-style="btn-outline-secondary"
+            asp-for="SelectedDrinkRequests" asp-items="@(new MultiSelectList(Model.DrinkRequests, "Id", "DrinkName"))">
+    </select>
+    <br />
+    <br />
+    <h2><u>Marriage Advice</u></h2>
+    <div class="form-group">
+        <textarea class="form-control" asp-for="RSVP.MarriageAdvice" id="marriageAdvice" rows="3" spellcheck="true"></textarea>
+    </div>
+
+    <button class="btn btn-primary" type="button">Update RSVP</button>
+    <button class="btn btn-primary" type="button">Delete RSVP</button>
+</form>
+
+@section scripts {
+
+
+
+    <script>
+        $(document).ready(function () {
+        })
+    </script>
+}
+
+
+

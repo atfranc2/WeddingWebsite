@@ -12,8 +12,6 @@
 
 
 @section scripts {
-    <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
     <script>
         let guestId = @Model.RSVP.GuestOneId;
@@ -47,7 +45,6 @@
         $("#marriageAdviceForm").submit(function (e) {
             e.preventDefault();
             rsvpViewModel.marriageAdvice = $("#marriageAdvice").val(); 
-            console.log(JSON.stringify(rsvpViewModel));
 
             $.ajax({
                 url: "/api/RSVPs",
