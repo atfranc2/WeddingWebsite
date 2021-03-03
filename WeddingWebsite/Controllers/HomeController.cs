@@ -21,7 +21,7 @@ namespace WeddingWebsite.Controllers
 
         public IActionResult Index()
         {
-            var photoFileList = Directory.GetFiles("wwwroot/Images/HomePagePictures/");
+            var photoFileList = Directory.GetFiles("wwwroot/Images/HomePictures/");
             var fileList = new List<string>();
 
             foreach (var file in photoFileList)
@@ -36,6 +36,11 @@ namespace WeddingWebsite.Controllers
         }
 
         public IActionResult OurStory()
+        {
+            return View();
+        }
+
+        public IActionResult WeddingDetails()
         {
             return View();
         }
